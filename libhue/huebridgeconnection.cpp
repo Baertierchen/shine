@@ -113,11 +113,10 @@ void HueBridgeConnection::onNoBridgesFound()
     qDebug() << Q_FUNC_INFO << "No hue bridges found!";
 }
 
-void HueBridgeConnection::createUser(const QString &devicetype, const QString &username)
+void HueBridgeConnection::createUser(const QString &devicetype)
 {
     QVariantMap params;
     params.insert("devicetype", devicetype);
-    params.insert("username", username);
 
 #if QT_VERSION >= 0x050000
     QJsonDocument jsonDoc = QJsonDocument::fromVariant(params);

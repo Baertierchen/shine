@@ -65,7 +65,7 @@ public:
     bool bridgeFound() const;
     QString connectedBridge() const;
 
-    Q_INVOKABLE void createUser(const QString &devicetype, const QString &username);
+    Q_INVOKABLE void createUser(const QString &devicetype);
 
     int get(const QString &path, QObject *sender, const QString &slot);
     int deleteResource(const QString &path, QObject *sender, const QString &slot);
