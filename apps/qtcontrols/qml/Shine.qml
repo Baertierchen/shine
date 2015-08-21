@@ -72,6 +72,10 @@ ApplicationWindow {
         id: lightsModel
     }
 
+    Users {
+        id: usersModel
+    }
+
     TabView {
         id: tabView
         anchors.fill: parent
@@ -106,6 +110,11 @@ ApplicationWindow {
                     property alias text: label.text
                 }
             }
+        }
+
+        UsersTab {
+            title: "Users"
+            users: usersModel
         }
     }
 }

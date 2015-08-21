@@ -29,6 +29,8 @@
 #include "../../libhue/scene.h"
 #include "../../libhue/schedules.h"
 #include "../../libhue/schedule.h"
+#include "../../libhue/users.h"
+#include "../../libhue/user.h"
 #include "../../libhue/lightsfiltermodel.h"
 
 #if QT_VERSION >= 0x050000
@@ -63,6 +65,7 @@ void HuePlugin::registerTypes(const char *uri)
     qmlRegisterUncreatableType<Schedule>(uri, 0, 1, "Schedule", "Get create Schedule objects. Get them from the Schedules model.");
     //FIXME: eventually creatable
     qmlRegisterUncreatableType<Group>(uri, 0, 1, "Group", "Cannot create groups. Get them from the Groups model.");
+    qmlRegisterType<Users>(uri, 0, 1, "Users");
     qmlRegisterType<LightsFilterModel>(uri, 0, 1, "LightsFilterModel");
 }
 

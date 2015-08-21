@@ -16,6 +16,8 @@ set(libhue_SRCS
     scene.cpp
     schedules.cpp
     schedule.cpp
+    users.cpp
+    user.cpp
 )
 
 add_library(hue ${libhue_SRCS})
