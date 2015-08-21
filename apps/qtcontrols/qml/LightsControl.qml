@@ -50,7 +50,9 @@ GridLayout {
         Layout.fillWidth: true
         minimumValue: 0
         maximumValue: 255
-        value: light ? light.bri : 0
+        value: {
+            light.on ? light.bri : 0
+        }
         onValueChanged: {
             light.bri = value
         }
@@ -62,7 +64,7 @@ GridLayout {
         Layout.fillHeight: true
         Layout.columnSpan: 2
         color: light.color
-        active: light.colormode == LightInterface.ColorModeHS || light.color == LightInterface.ColorModeXY
+        active: light.colormode === LightInterface.ColorModeHS || light.color === LightInterface.ColorModeXY
         onColorChanged: {
             if (pressed) {
                 light.color = color;
@@ -83,7 +85,7 @@ GridLayout {
         height: effectLabel.height * 2
         Layout.columnSpan: 2
         ct: light.ct
-        active: light.colormode == LightInterface.ColorModeCT
+        active: light.colormode === LightInterface.ColorModeCT
 
         onCtChanged: {
             if (pressed) {
@@ -120,7 +122,7 @@ GridLayout {
             }
 
             for (var i = 0; i < effectModel.count; i++) {
-                if (effectModel.get(i).value == light.effect) {
+                if (effectModel.get(i).value === light.effect) {
                     effectCb.currentIndex = i;
                 }
             }

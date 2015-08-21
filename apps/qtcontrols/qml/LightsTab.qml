@@ -27,6 +27,7 @@ import Hue 0.1
 Tab {
     id: root
     property var lights
+    property var tmpGroup
 
     SplitView {
         anchors.fill: parent
@@ -41,7 +42,8 @@ Tab {
                 }
                 textRole: "name"
                 onCurrentIndexChanged: {
-                    lightsFilterModel.groupId = groups.get(currentIndex).id
+                    tmpGroup = groups.get(currentIndex);
+                    if (tmpGroup !== null) lightsFilterModel.groupId = tmpGroup.id
                 }
             }
 
@@ -63,7 +65,7 @@ Tab {
             Button {
                 id: deleteButton
                 Layout.fillWidth: true
-                property var group: groups.get(groupsView.currentRow)
+                property var group: groups.get(groupsComboBox.currentRow)
                 text: "Delete Group"
                 enabled: groupsComboBox.currentIndex > 0
                 onClicked: {
