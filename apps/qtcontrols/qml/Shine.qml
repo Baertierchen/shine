@@ -99,6 +99,7 @@ ApplicationWindow {
                     height: colorPicker.height / 10
                     width: height
                     radius: height * .499
+                    opacity: 0.8
                     color: light ? (light.on ? "blue" : light.reachable ? "gray" : "red") : "transparent"
                     Label {
                         id: label

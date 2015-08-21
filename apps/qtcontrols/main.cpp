@@ -61,7 +61,6 @@ int main(int argc, char *argv[])
         return -1;
     }
 
-    qDebug() << "setting app icon" << QImageReader::supportedImageFormats();
     window->setIcon(QIcon("shine.svg"));
     window->show();
     return app.exec();
