@@ -21,7 +21,11 @@ add_custom_target(shine-qmlfiles ALL
     COMMAND cp -r ${CMAKE_CURRENT_SOURCE_DIR}/qml ${CMAKE_CURRENT_BINARY_DIR}
     DEPENDS ${QMLFILES}
 )
+
+file(GLOB_RECURSE ICONS icons/*.svg)
+
 add_custom_target(shine-icon ALL
-    COMMAND cp ${CMAKE_CURRENT_SOURCE_DIR}/shine.svg ${CMAKE_CURRENT_BINARY_DIR}
+    COMMAND mkdir -p ${CMAKE_CURRENT_BINARY_DIR}/icons
+    COMMAND cp ${ICONS} ${CMAKE_CURRENT_BINARY_DIR}/icons
     DEPENDS ${QMLFILES}
 )

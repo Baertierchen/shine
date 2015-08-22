@@ -61,7 +61,7 @@ int main(int argc, char *argv[])
         return -1;
     }
 
-    window->setIcon(QIcon("shine.svg"));
+    window->setIcon(QIcon("icons/shine.svg"));
     window->show();
     return app.exec();
 }
