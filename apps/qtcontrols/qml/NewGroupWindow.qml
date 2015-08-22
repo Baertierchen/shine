@@ -74,8 +74,6 @@ ApplicationWindow {
                         property alias checked: checkBox.checked
                         CheckBox {
                             id: checkBox
-                        }
-                        Label {
                             text: model.name
                         }
                     }

@@ -64,7 +64,7 @@ private slots:
     void lightStateChanged();
 
 private:
-    Light* createLight(int id, const QString &name);
+    Light* createLight(int id, const QVariantMap &map);
 
 private:
     QList<Light*> m_list;

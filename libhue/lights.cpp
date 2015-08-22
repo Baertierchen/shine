@@ -159,7 +159,8 @@ void Lights::lightsReceived(int id, const QVariant &variant)
             }
         }
         if (!existing) {
-            Light *light = createLight(lightId.toInt(), lights.value(lightId).toMap().value("name").toString());
+            QVariantMap lightMap = lights.value(lightId).toMap();
+            Light *light = createLight(lightId.toInt(), lightMap);
             newLights.append(light);
         }
     }
@@ -217,9 +218,12 @@ void Lights::lightStateChanged()
 #endif
 }
 
-Light *Lights::createLight(int id, const QString &name)
+Light *Lights::createLight(int id, const QVariantMap &map)
 {
-    Light *light = new Light(id, name, this);
+    Light *light = new Light(id, map.value("name").toString(), this);
+    light->setModelId(map.value("modelid").toString());
+    light->setType(map.value("type").toString());
+    light->setSwversion(map.value("swversion").toString());
 
     connect(light, SIGNAL(nameChanged()), this, SLOT(lightDescriptionChanged()));
     connect(light, SIGNAL(modelIdChanged()), this, SLOT(lightDescriptionChanged()));

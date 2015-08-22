@@ -6,7 +6,7 @@ message(${CMAKE_SOURCE_DIR}/libhue)
 
 file(GLOB_RECURSE QML_SRCS *.qml *.js qmldir)
 
-add_library(hueplugin MODULE hueplugin.cpp ${QML_SRCS})
+add_library(hueplugin MODULE hueplugin.cpp iconMap.h ${QML_SRCS})
 
 if(QT4_BUILD)
 else()

@@ -18,6 +18,7 @@
  */
 
 #include "hueplugin.h"
+#include "iconMap.h"
 
 // FIXME: Dafuq is going on on harmattan? doesnt find those with include_dir() in CMakeLists.txt
 #include "../../libhue/huebridgeconnection.h"
@@ -46,6 +47,12 @@ static QObject* hueBridgeInstance(QQmlEngine* /* engine */, QJSEngine* /* script
 {
     return HueBridgeConnection::instance();
 }
+
+IconMap* IconMap::s_instance = NULL;
+static QObject* iconMapInstance(QQmlEngine* /* engine */, QJSEngine* /* scriptEngine */)
+{
+    return IconMap::instance();
+}
 #endif
 
 void HuePlugin::registerTypes(const char *uri)
@@ -54,6 +61,7 @@ void HuePlugin::registerTypes(const char *uri)
 
 #if QT_VERSION >= 0x050000
     qmlRegisterSingletonType<HueBridgeConnection>(uri, 0, 1, "HueBridge", hueBridgeInstance);
+    qmlRegisterSingletonType<IconMap>(uri, 0, 1, "IconMap", iconMapInstance);
 #endif
     qmlRegisterType<Lights>(uri, 0, 1, "Lights");
     qmlRegisterUncreatableType<Light>(uri, 0, 1, "Light", "Cannot create lights. Get them from the Lights model.");

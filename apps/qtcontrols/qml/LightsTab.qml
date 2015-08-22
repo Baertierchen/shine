@@ -32,8 +32,8 @@ Tab {
     SplitView {
         anchors.fill: parent
 
-
         ColumnLayout {
+            width: 200
             ComboBox {
                 id: groupsComboBox
                 Layout.fillWidth: true
@@ -47,18 +47,38 @@ Tab {
                 }
             }
 
-            TableView {
-
+            ListView {
                 id: lightsView
                 model: LightsFilterModel {
                     id: lightsFilterModel
                     lights: root.lights
                 }
                 Layout.fillHeight: true
+                focus: true
+                highlight: Rectangle {color: "lightsteelblue"; radius: 5 }
+                width: parent.width
 
-                TableViewColumn {
-                    role: "name"
-                    title: "Hue bulbs"
+                delegate: Image {
+                    width: parent.width
+                    height: 30
+                    Image {
+                        id: lightImage
+                        height: parent.height
+                        width: parent.height
+                        source: "../" + IconMap.getIcon(lightsFilterModel.get(index).modelId)
+                    }
+                    Label {
+                        Layout.fillWidth: true
+                        anchors.verticalCenter: lightImage.verticalCenter
+                        anchors.left: lightImage.right
+                        text: lightsFilterModel.get(index).name
+                    }
+                    MouseArea {
+                        anchors.fill: parent
+                        onClicked: {
+                            lightsView.currentIndex = index
+                        }
+                    }
                 }
             }
 
@@ -92,8 +112,8 @@ Tab {
             LightsControl {
                 anchors.fill: parent
                 anchors.margins: 20
-                visible: lightsView.currentRow > -1
-                light: root.lights.get(lightsView.currentRow)
+                visible: lightsView.currentIndex > -1
+                light: root.lights.get(lightsView.currentIndex)
             }
         }
     }
