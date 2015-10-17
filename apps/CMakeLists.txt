@@ -3,5 +3,6 @@ if(QT4_BUILD)
 else()
     add_subdirectory(ubuntu)
     add_subdirectory(qtcontrols)
+    add_subdirectory(qtGui)
 endif()
 
