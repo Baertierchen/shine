@@ -30,6 +30,10 @@
 #include "sensors.h"
 #include "sensorDelegate.h"
 
+#include "rule.h"
+#include "rules.h"
+#include "ruleDelegate.h"
+
 namespace Ui {
 class ShineGUI;
 }
@@ -66,6 +70,11 @@ private slots:
     void sensorsSelectionChanged(const QItemSelection &selected, const QItemSelection &deselected);
     void removeSensor();
     void addSensor();
+
+    // rules
+    void rulesSelectionChanged(const QItemSelection &selected, const QItemSelection &deselected);
+    void removeRule();
+    void addRule();
 
 private:
     void drawColorMap();
@@ -109,6 +118,12 @@ private:
     SensorDelegate sensorDelegate;
     Sensor* activeSensor;
     QModelIndex currentSensorModelIndex;
+
+    // Rules
+    Rules rules;
+    RuleDelegate ruleDelegate;
+    Rule* activeRule;
+    QModelIndex currentRuleModelIndex;
 };
 
 #endif // SHINEGUI_H

@@ -59,6 +59,14 @@ ShineGUI::ShineGUI(QWidget *parent) :
 
     ui->lv_sensors->horizontalHeader()->setSectionResizeMode(0, QHeaderView::Stretch);
     ui->lv_sensors->horizontalHeader()->setSectionResizeMode(1, QHeaderView::ResizeToContents);
+
+    // rules
+    rules.setAutoRefresh(true);
+    ui->lv_rules->setModel(&rules);
+    ui->lv_rules->setItemDelegate(&ruleDelegate);
+
+    connect(ui->lv_rules->selectionModel(), &QItemSelectionModel::selectionChanged, this, &ShineGUI::rulesSelectionChanged);
+    connect(ui->btn_removeRule, &QPushButton::clicked, this, &ShineGUI::removeRule);
 }
 
 ShineGUI::~ShineGUI()
@@ -244,4 +252,27 @@ void ShineGUI::addSensor()
 
     QString id = QString::number(qrand());
     sensors->createSensor(name, id);
+}
+
+void ShineGUI::rulesSelectionChanged(const QItemSelection &selected, const QItemSelection &deselected)
+{
+    (void) deselected;
+    if (selected.size() == 1){
+        currentRuleModelIndex = selected.first().topLeft();
+        activeRule = rules.get(currentRuleModelIndex.row());
+    }else{
+        activeRule = NULL;
+    }
+}
+
+void ShineGUI::removeRule()
+{
+    if (activeRule != NULL){
+        rules.deleteRule(activeRule->id());
+    }
+}
+
+void ShineGUI::addRule()
+{
+
 }

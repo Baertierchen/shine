@@ -80,9 +80,9 @@ Rule* Rules::findRule(const QString &id) const
     return 0;
 }
 
-void Rules::deleteRule(int ruleId)
+void Rules::deleteRule(QString ruleId)
 {
-    HueBridgeConnection::instance()->deleteResource("rules/" + QString::number(ruleId), this, "ruleDeleted");
+    HueBridgeConnection::instance()->deleteResource("rules/" + ruleId, this, "ruleDeleted");
 }
 
 void Rules::createRule(const QString &name, const QVariantList &conditions, const QVariantList &actions)

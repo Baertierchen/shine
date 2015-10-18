@@ -48,7 +48,7 @@ public:
     QHash<int, QByteArray> roleNames() const;
     Q_INVOKABLE Rule* get(int index) const;
     Q_INVOKABLE Rule* findRule(const QString &id) const;
-    Q_INVOKABLE void deleteRule(int ruleId);
+    Q_INVOKABLE void deleteRule(QString ruleId);
 
     Q_INVOKABLE void createRule(const QString &name, const QVariantList &conditions, const QVariantList &actions);
 
