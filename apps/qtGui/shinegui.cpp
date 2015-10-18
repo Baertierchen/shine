@@ -29,6 +29,11 @@ ShineGUI::ShineGUI(QWidget *parent) :
 
     // scenes
     scenes.setAutoRefresh(true);
+    ui->lv_scenes->setModel(&scenes);
+    ui->lv_scenes->setItemDelegate(&sceneDelegate);
+
+    connect(ui->lv_scenes->selectionModel(), &QItemSelectionModel::selectionChanged, this, &ShineGUI::scenesSelectionChanged);
+    connect(ui->btn_activateScene, &QPushButton::clicked, this, &ShineGUI::activateScene);
 
     // users
     users.setAutoRefresh(true);
@@ -145,17 +150,32 @@ void ShineGUI::lightBrightnessChanged(int bri)
     activeLight->setBri(bri);
 }
 
+void ShineGUI::scenesSelectionChanged(const QItemSelection &selected, const QItemSelection &deselected)
+{
+    (void) deselected;
+    if (selected.size() == 1){
+        currentSceneModelIndex = selected.first().topLeft();
+        activeScene = scenes.get(currentSceneModelIndex.row());
+    }else{
+        activeScene = NULL;
+    }
+}
+
+void ShineGUI::activateScene()
+{
+    if (activeScene != NULL){
+        scenes.recallScene(activeScene->id());
+    }
+}
+
 void ShineGUI::usersSelectionChanged(const QItemSelection &selected, const QItemSelection &deselected)
 {
     (void) deselected;
-    qDebug() << "User sel";
     if (selected.size() == 1){
         currentUserModelIndex = selected.first().topLeft();
         activeUser = users.get(currentUserModelIndex.row());
-        qDebug() << "Selected user";
     }else{
         activeUser = NULL;
-        qDebug() << "Invalid selection";
     }
 }
 

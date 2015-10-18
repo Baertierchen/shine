@@ -15,7 +15,10 @@
 #include "light.h"
 #include "lights.h"
 #include "lightDelegate.h"
+
+#include "scene.h"
 #include "scenes.h"
+#include "sceneDelegate.h"
 
 #include "user.h"
 #include "users.h"
@@ -44,6 +47,10 @@ private slots:
     void lightPowerToggled(bool on);
     void lightBrightnessChanged(int bri);
 
+    // scenes
+    void scenesSelectionChanged(const QItemSelection &selected, const QItemSelection &deselected);
+    void activateScene();
+
     // users
     void usersSelectionChanged(const QItemSelection &selected, const QItemSelection &deselected);
     void removeUser();
@@ -63,13 +70,18 @@ private:
     Light* activeLight = NULL;
     Lights lights;
     LightDelegate lightDelegate;
-    Scenes scenes;
     QModelIndex currentLightModelIndex;
 
     QPixmap *colorMap;
     QPixmap *colorMapWithLight;
     QPixmap *activeColorMap;
     QGraphicsScene colorMapScene;
+
+    // Scenes
+    Scene* activeScene = NULL;
+    Scenes scenes;
+    SceneDelegate sceneDelegate;
+    QModelIndex currentSceneModelIndex;
 
     // Users
     User* activeUser = NULL;
