@@ -15,9 +15,120 @@ ShineGUI::ShineGUI(QWidget *parent) :
 
     ui->lv_lights->setModel(&lights);
     ui->lv_lights->setItemDelegate(&lightDelegate);
+
+    ui->gv_colorMapView->setScene(&colorMapScene);
+    colorMap = new QPixmap(360, 255);
+    colorMapWithLight = new QPixmap(360, 255);
+    activeColorMap = colorMap;
+
+    drawColorMap();
+
+    connect(ui->lv_lights->selectionModel(), &QItemSelectionModel::selectionChanged, this, &ShineGUI::lightsSelectionChanged);
+    connect(ui->chk_power, &QCheckBox::toggled, this, &ShineGUI::lightPowerToggled);
+    connect(ui->sl_brightness, &QSlider::valueChanged, this, &ShineGUI::lightBrightnessChanged);
 }
 
 ShineGUI::~ShineGUI()
 {
     delete ui;
+}
+
+void ShineGUI::drawColorMap()
+{
+    QPainter painter;
+    painter.begin(colorMap);
+    for (int hue = 0; hue<359; hue++){
+        for (int sat = 0; sat<255; sat++){
+            QPen pen(QColor::fromHsv(hue, sat, 255));
+            painter.setPen(pen);
+            painter.drawPoint(hue, sat);
+        }
+    }
+    painter.end();
+
+    colorMapScene.clear();
+    colorMapScene.setSceneRect(0,0,ui->gv_colorMapView->width(), ui->gv_colorMapView->height());
+    colorMapScene.addPixmap(colorMap->scaled(ui->gv_colorMapView->size(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation)); // SmoothTransformation
+}
+
+void ShineGUI::updateLightData()
+{
+    bool editingPossible = false;
+    if (activeLight != NULL){
+        bool isReachable = activeLight->reachable();
+        bool on = activeLight->on();
+        ui->chk_power->setChecked(on);
+
+        int bri = activeLight->bri();
+        ui->sl_brightness->setValue(bri);
+
+        if (isReachable){
+            editingPossible = true;
+            activeColorMap = colorMapWithLight;
+
+            int hue = activeLight->hue() * 360 / 65536;
+            int sat = activeLight->sat();
+            *colorMapWithLight = *colorMap;
+
+            QPainter painter;
+            painter.begin(colorMapWithLight);
+            QBrush brush(Qt::black);
+            painter.setBrush(brush);
+            QPoint point(hue, sat);
+            painter.drawEllipse(point, 2, 2);
+            painter.end();
+
+            colorMapScene.clear();
+            colorMapScene.setSceneRect(0,0,ui->gv_colorMapView->width(), ui->gv_colorMapView->height());
+            colorMapScene.addPixmap(colorMapWithLight->scaled(ui->gv_colorMapView->size(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation)); // SmoothTransformation
+        }else{
+            activeColorMap = colorMap;
+            activeLight = NULL;
+            resizeEvent(NULL);
+        }
+    }
+
+    ui->chk_power->setEnabled(editingPossible);
+    ui->sl_brightness->setEnabled(editingPossible);
+    ui->gv_colorMapView->setEnabled(editingPossible);
+}
+
+
+void ShineGUI::resizeEvent(QResizeEvent *)
+{
+    colorMapScene.clear();
+    colorMapScene.setSceneRect(0,0,ui->gv_colorMapView->width(), ui->gv_colorMapView->height());
+    colorMapScene.addPixmap(activeColorMap->scaled(ui->gv_colorMapView->size(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation)); // SmoothTransformation
+}
+
+void ShineGUI::lightsSelectionChanged(const QItemSelection &selected, const QItemSelection &deselected)
+{
+    (void) deselected;
+    if (selected.size() == 1){
+        currentLightModelIndex = selected.first().topLeft();
+        activeLight = lights.get(currentLightModelIndex.row());
+        connect(activeLight, &Light::stateChanged, this, &ShineGUI::lightStateChanged);
+
+        updateLightData();
+    }else{
+        activeLight = NULL;
+    }
+}
+
+void ShineGUI::lightStateChanged()
+{
+    qDebug() << "Light state changed";
+    updateLightData();
+}
+
+void ShineGUI::lightPowerToggled(bool on)
+{
+    if (activeLight == NULL) return;
+    activeLight->setOn(on);
+}
+
+void ShineGUI::lightBrightnessChanged(int bri)
+{
+    if (activeLight == NULL) return;
+    activeLight->setBri(bri);
 }
