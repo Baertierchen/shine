@@ -24,7 +24,7 @@ HueModel::HueModel(QObject *parent) :
     QAbstractListModel(parent)
 {
     connect(&m_refreshTimer, SIGNAL(timeout()), this, SLOT(refresh()));
-    m_refreshTimer.setInterval(10000);
+    m_refreshTimer.setInterval(3000);
 
     connect(this, SIGNAL(rowsInserted(QModelIndex,int,int)), this, SIGNAL(countChanged()));
     connect(this, SIGNAL(rowsRemoved(QModelIndex,int,int)), this, SIGNAL(countChanged()));

@@ -9,9 +9,9 @@ ShineGUI::ShineGUI(QWidget *parent) :
     bridge = HueBridgeConnection::instance();
     bridge->setApiKey(keystore.apiKey());
 
+    // lights
     lights.setIconBasePath("../../icons");
     lights.setAutoRefresh(true);
-    scenes.setAutoRefresh(true);
 
     ui->lv_lights->setModel(&lights);
     ui->lv_lights->setItemDelegate(&lightDelegate);
@@ -26,6 +26,9 @@ ShineGUI::ShineGUI(QWidget *parent) :
     connect(ui->lv_lights->selectionModel(), &QItemSelectionModel::selectionChanged, this, &ShineGUI::lightsSelectionChanged);
     connect(ui->chk_power, &QCheckBox::toggled, this, &ShineGUI::lightPowerToggled);
     connect(ui->sl_brightness, &QSlider::valueChanged, this, &ShineGUI::lightBrightnessChanged);
+
+    // scenes
+    scenes.setAutoRefresh(true);
 
     // users
     users.setAutoRefresh(true);
