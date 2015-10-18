@@ -19,6 +19,7 @@
 #include "scene.h"
 #include "scenes.h"
 #include "sceneDelegate.h"
+#include "sceneLightsDelegate.h"
 
 #include "user.h"
 #include "users.h"
@@ -60,6 +61,8 @@ private:
     void drawColorMap();
     void updateLightData();
 
+    void updateSceneData();
+
     Ui::ShineGUI *ui;
 
     KeyStore keystore;
@@ -81,6 +84,7 @@ private:
     Scene* activeScene = NULL;
     Scenes scenes;
     SceneDelegate sceneDelegate;
+    SceneLightsDelegate *sceneLightsDelegate;
     QModelIndex currentSceneModelIndex;
 
     // Users

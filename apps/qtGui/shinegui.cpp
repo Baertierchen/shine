@@ -32,6 +32,9 @@ ShineGUI::ShineGUI(QWidget *parent) :
     ui->lv_scenes->setModel(&scenes);
     ui->lv_scenes->setItemDelegate(&sceneDelegate);
 
+    sceneLightsDelegate = new SceneLightsDelegate(&lights);
+    ui->lv_sceneBulbs->setItemDelegate(sceneLightsDelegate);
+
     connect(ui->lv_scenes->selectionModel(), &QItemSelectionModel::selectionChanged, this, &ShineGUI::scenesSelectionChanged);
     connect(ui->btn_activateScene, &QPushButton::clicked, this, &ShineGUI::activateScene);
 
@@ -110,6 +113,11 @@ void ShineGUI::updateLightData()
     ui->gv_colorMapView->setEnabled(editingPossible);
 }
 
+void ShineGUI::updateSceneData()
+{
+
+}
+
 
 void ShineGUI::resizeEvent(QResizeEvent *)
 {
@@ -134,7 +142,6 @@ void ShineGUI::lightsSelectionChanged(const QItemSelection &selected, const QIte
 
 void ShineGUI::lightStateChanged()
 {
-    qDebug() << "Light state changed";
     updateLightData();
 }
 
@@ -156,6 +163,7 @@ void ShineGUI::scenesSelectionChanged(const QItemSelection &selected, const QIte
     if (selected.size() == 1){
         currentSceneModelIndex = selected.first().topLeft();
         activeScene = scenes.get(currentSceneModelIndex.row());
+        ui->lv_sceneBulbs->setModel(activeScene);
     }else{
         activeScene = NULL;
     }
@@ -182,7 +190,6 @@ void ShineGUI::usersSelectionChanged(const QItemSelection &selected, const QItem
 void ShineGUI::removeUser()
 {
     if (activeUser != NULL){
-        qDebug() << "Remove user with index:" << currentUserModelIndex.row();
         users.deleteUser(currentUserModelIndex.row());
     }
 }
