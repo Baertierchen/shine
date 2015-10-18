@@ -68,7 +68,6 @@ QVariant Lights::data(const QModelIndex &index, int role) const
     case RoleSaturation:
         return light->sat();
     case RoleXY:
-        qDebug() << light->xy();
         return light->xy();
     case RoleCt:
         return light->ct();

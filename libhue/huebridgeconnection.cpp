@@ -350,7 +350,7 @@ void HueBridgeConnection::slotOpFinished()
     int id = m_requestIdMap.take(reply);
     CallbackObject co = m_requestSenderMap.take(id);
 
-    qDebug() << "reply for" << co.sender() << co.slot();
+//    qDebug() << "reply for" << co.sender() << co.slot();
 //    qDebug() << "response" << response;
 
     QVariant rsp;

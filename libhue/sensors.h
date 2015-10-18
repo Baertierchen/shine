@@ -20,10 +20,8 @@
 #ifndef SENSORS_H
 #define SENSORS_H
 
-#include "huemodel.h"
 #include "sensor.h"
-
-#include <QTimer>
+#include "huemodel.h"
 
 class Sensor;
 

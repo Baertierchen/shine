@@ -7,6 +7,7 @@
 #include <QGraphicsScene>
 #include <QItemSelection>
 #include <QMouseEvent>
+#include <QUuid>
 
 #include "keystore.h"
 #include "huebridgeconnection.h"
@@ -24,6 +25,10 @@
 #include "user.h"
 #include "users.h"
 #include "userDelegate.h"
+
+#include "sensor.h"
+#include "sensors.h"
+#include "sensorDelegate.h"
 
 namespace Ui {
 class ShineGUI;
@@ -57,6 +62,11 @@ private slots:
     void removeUser();
     void pressLinkButton();
 
+    // sensors
+    void sensorsSelectionChanged(const QItemSelection &selected, const QItemSelection &deselected);
+    void removeSensor();
+    void addSensor();
+
 private:
     void drawColorMap();
     void updateLightData();
@@ -68,11 +78,12 @@ private:
     KeyStore keystore;
     HueBridgeConnection *bridge;
     Configuration configuration;
+    QUuid uuid;
 
     // Lights
-    Light* activeLight = NULL;
     Lights lights;
     LightDelegate lightDelegate;
+    Light* activeLight = NULL;
     QModelIndex currentLightModelIndex;
 
     QPixmap *colorMap;
@@ -81,17 +92,23 @@ private:
     QGraphicsScene colorMapScene;
 
     // Scenes
-    Scene* activeScene = NULL;
     Scenes scenes;
     SceneDelegate sceneDelegate;
     SceneLightsDelegate *sceneLightsDelegate;
+    Scene* activeScene = NULL;
     QModelIndex currentSceneModelIndex;
 
     // Users
-    User* activeUser = NULL;
     Users users;
     UserDelegate userDelegate;
+    User* activeUser = NULL;
     QModelIndex currentUserModelIndex;
+
+    // Sensors
+    Sensors* sensors;
+    SensorDelegate sensorDelegate;
+    Sensor* activeSensor;
+    QModelIndex currentSensorModelIndex;
 };
 
 #endif // SHINEGUI_H

@@ -222,7 +222,6 @@ void Sensors::sensorDeleted(int id, const QVariant &response)
 
 void Sensors::sensorsReceived(int id, const QVariant &variant)
 {
-//    qDebug() << "**** sensors received" << variant;
     Q_UNUSED(id)
     QVariantMap sensors = variant.toMap();
     QList<Sensor*> removedSensors;

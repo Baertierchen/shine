@@ -46,6 +46,19 @@ ShineGUI::ShineGUI(QWidget *parent) :
     connect(ui->lv_users->selectionModel(), &QItemSelectionModel::selectionChanged, this, &ShineGUI::usersSelectionChanged);
     connect(ui->btn_removeUser, &QPushButton::clicked, this, &ShineGUI::removeUser);
     connect(ui->btn_linkButton, &QPushButton::clicked, this, &ShineGUI::pressLinkButton);
+
+    // sensors
+    sensors = Sensors::instance();
+    sensors->setAutoRefresh(true);
+    ui->lv_sensors->setModel(sensors);
+    ui->lv_sensors->setItemDelegate(&sensorDelegate);
+
+    connect(ui->lv_sensors->selectionModel(), &QItemSelectionModel::selectionChanged, this, &ShineGUI::sensorsSelectionChanged);
+    connect(ui->btn_removeSensor, &QPushButton::clicked, this, &ShineGUI::removeSensor);
+    connect(ui->btn_addSensor, &QPushButton::clicked, this, &ShineGUI::addSensor);
+
+    ui->lv_sensors->horizontalHeader()->setSectionResizeMode(0, QHeaderView::Stretch);
+    ui->lv_sensors->horizontalHeader()->setSectionResizeMode(1, QHeaderView::ResizeToContents);
 }
 
 ShineGUI::~ShineGUI()
@@ -117,7 +130,6 @@ void ShineGUI::updateSceneData()
 {
 
 }
-
 
 void ShineGUI::resizeEvent(QResizeEvent *)
 {
@@ -197,4 +209,39 @@ void ShineGUI::removeUser()
 void ShineGUI::pressLinkButton()
 {
     configuration.pressLinkButton();
+}
+
+void ShineGUI::sensorsSelectionChanged(const QItemSelection &selected, const QItemSelection &deselected)
+{
+    (void) deselected;
+    if (selected.size() == 1){
+        currentSensorModelIndex = selected.first().topLeft();
+        activeSensor = sensors->get(currentSensorModelIndex.row());
+    }else{
+        activeSensor = NULL;
+    }
+}
+
+void ShineGUI::removeSensor()
+{
+    if (activeSensor != NULL){
+        sensors->deleteSensor(activeSensor->id());
+    }
+}
+
+void ShineGUI::addSensor()
+{
+    QString name = ui->txt_sensorName->text();
+    if (name == ""){
+        qDebug() << "Name must not be empty";
+        return;
+    }
+
+    if (name.contains(' ')){
+        qDebug() << "Name must not contain spaces";
+        return;
+    }
+
+    QString id = QString::number(qrand());
+    sensors->createSensor(name, id);
 }
