@@ -27,7 +27,5 @@ else()
 endif()
 
 add_subdirectory(libhue)
-add_subdirectory(plugin)
+#add_subdirectory(plugin)
 add_subdirectory(apps)
-
-
