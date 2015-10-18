@@ -1,16 +1,16 @@
-#ifndef LIGHTDELEGATE_H
-#define LIGHTDELEGATE_H
+#ifndef USERDELEGATE_H
+#define USERDELEGATE_H
 
 #include <QStyledItemDelegate>
 #include <QPainter>
 
-#include "lights.h"
+#include "users.h"
 #include "delegateConfig.h"
 
-class LightDelegate : public QStyledItemDelegate
+class UserDelegate : public QStyledItemDelegate
 {
 public:
-    LightDelegate();
+    UserDelegate();
 
     // QAbstractItemDelegate interface
 public:
@@ -18,4 +18,4 @@ public:
     virtual void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;
 };
 
-#endif // LIGHTDELEGATE_H
+#endif // USERDELEGATE_H

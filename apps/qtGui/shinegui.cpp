@@ -26,6 +26,15 @@ ShineGUI::ShineGUI(QWidget *parent) :
     connect(ui->lv_lights->selectionModel(), &QItemSelectionModel::selectionChanged, this, &ShineGUI::lightsSelectionChanged);
     connect(ui->chk_power, &QCheckBox::toggled, this, &ShineGUI::lightPowerToggled);
     connect(ui->sl_brightness, &QSlider::valueChanged, this, &ShineGUI::lightBrightnessChanged);
+
+    // users
+    users.setAutoRefresh(true);
+    ui->lv_users->setModel(&users);
+    ui->lv_users->setItemDelegate(&userDelegate);
+
+    connect(ui->lv_users->selectionModel(), &QItemSelectionModel::selectionChanged, this, &ShineGUI::usersSelectionChanged);
+    connect(ui->btn_removeUser, &QPushButton::clicked, this, &ShineGUI::removeUser);
+    connect(ui->btn_linkButton, &QPushButton::clicked, this, &ShineGUI::pressLinkButton);
 }
 
 ShineGUI::~ShineGUI()
@@ -131,4 +140,31 @@ void ShineGUI::lightBrightnessChanged(int bri)
 {
     if (activeLight == NULL) return;
     activeLight->setBri(bri);
+}
+
+void ShineGUI::usersSelectionChanged(const QItemSelection &selected, const QItemSelection &deselected)
+{
+    (void) deselected;
+    qDebug() << "User sel";
+    if (selected.size() == 1){
+        currentUserModelIndex = selected.first().topLeft();
+        activeUser = users.get(currentUserModelIndex.row());
+        qDebug() << "Selected user";
+    }else{
+        activeUser = NULL;
+        qDebug() << "Invalid selection";
+    }
+}
+
+void ShineGUI::removeUser()
+{
+    if (activeUser != NULL){
+        qDebug() << "Remove user with index:" << currentUserModelIndex.row();
+        users.deleteUser(currentUserModelIndex.row());
+    }
+}
+
+void ShineGUI::pressLinkButton()
+{
+    configuration.pressLinkButton();
 }
