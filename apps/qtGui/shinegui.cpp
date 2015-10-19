@@ -65,6 +65,8 @@ ShineGUI::ShineGUI(QWidget *parent) :
     ui->lv_rules->setModel(&rules);
     ui->lv_rules->setItemDelegate(&ruleDelegate);
 
+    ui->lv_ruleConditions->setItemDelegate(&ruleConditionDelegate);
+
     connect(ui->lv_rules->selectionModel(), &QItemSelectionModel::selectionChanged, this, &ShineGUI::rulesSelectionChanged);
     connect(ui->btn_removeRule, &QPushButton::clicked, this, &ShineGUI::removeRule);
 }
@@ -260,6 +262,12 @@ void ShineGUI::rulesSelectionChanged(const QItemSelection &selected, const QItem
     if (selected.size() == 1){
         currentRuleModelIndex = selected.first().topLeft();
         activeRule = rules.get(currentRuleModelIndex.row());
+
+        ui->lv_ruleConditions->setModel(activeRule->conditions());
+        ui->lv_ruleConditions->horizontalHeader()->setSectionResizeMode(0, QHeaderView::Stretch);
+        ui->lv_ruleConditions->horizontalHeader()->setSectionResizeMode(1, QHeaderView::ResizeToContents);
+        ui->lv_ruleConditions->horizontalHeader()->setSectionResizeMode(2, QHeaderView::ResizeToContents);
+        ui->lv_ruleConditions->horizontalHeader()->setSectionResizeMode(3, QHeaderView::ResizeToContents);
     }else{
         activeRule = NULL;
     }

@@ -3,6 +3,10 @@ set(UBUNTU_MANIFEST_PATH "apps/ubuntu/manifest.json" CACHE INTERNAL "Tells QtCre
 
 project(shine C CXX)
 
+IF( NOT CMAKE_BUILD_TYPE )
+  SET( CMAKE_BUILD_TYPE "RelWithDebInfo" )
+ENDIF()
+
 set(CMAKE_AUTOMOC ON)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-permissive -pedantic -Wall -Wextra -fPIC")
