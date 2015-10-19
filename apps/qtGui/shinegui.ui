@@ -18,6 +18,18 @@
     <property name="spacing">
      <number>3</number>
     </property>
+    <property name="leftMargin">
+     <number>3</number>
+    </property>
+    <property name="topMargin">
+     <number>3</number>
+    </property>
+    <property name="rightMargin">
+     <number>3</number>
+    </property>
+    <property name="bottomMargin">
+     <number>3</number>
+    </property>
     <item>
      <widget class="QTabWidget" name="tabWidget">
       <property name="tabShape">
@@ -34,6 +46,21 @@
         <string>Lights</string>
        </attribute>
        <layout class="QHBoxLayout" name="horizontalLayout_3">
+        <property name="spacing">
+         <number>3</number>
+        </property>
+        <property name="leftMargin">
+         <number>3</number>
+        </property>
+        <property name="topMargin">
+         <number>3</number>
+        </property>
+        <property name="rightMargin">
+         <number>3</number>
+        </property>
+        <property name="bottomMargin">
+         <number>3</number>
+        </property>
         <item>
          <widget class="QListView" name="lv_lights">
           <property name="sizePolicy">
@@ -73,8 +100,14 @@
         </item>
         <item>
          <layout class="QVBoxLayout" name="verticalLayout">
+          <property name="spacing">
+           <number>3</number>
+          </property>
           <item>
            <layout class="QHBoxLayout" name="horizontalLayout_2">
+            <property name="spacing">
+             <number>3</number>
+            </property>
             <item>
              <widget class="QCheckBox" name="chk_power">
               <property name="enabled">
@@ -144,16 +177,37 @@
         <string>Scenes</string>
        </attribute>
        <layout class="QHBoxLayout" name="horizontalLayout_6">
+        <property name="spacing">
+         <number>3</number>
+        </property>
+        <property name="leftMargin">
+         <number>3</number>
+        </property>
+        <property name="topMargin">
+         <number>3</number>
+        </property>
+        <property name="rightMargin">
+         <number>3</number>
+        </property>
+        <property name="bottomMargin">
+         <number>3</number>
+        </property>
         <item>
          <widget class="QListView" name="lv_scenes"/>
         </item>
         <item>
          <layout class="QVBoxLayout" name="verticalLayout_3">
+          <property name="spacing">
+           <number>3</number>
+          </property>
           <item>
            <widget class="QListView" name="lv_sceneBulbs"/>
           </item>
           <item>
            <layout class="QHBoxLayout" name="horizontalLayout_5">
+            <property name="spacing">
+             <number>3</number>
+            </property>
             <item>
              <widget class="QPushButton" name="btn_activateScene">
               <property name="text">
@@ -185,11 +239,29 @@
         <string>Users</string>
        </attribute>
        <layout class="QVBoxLayout" name="verticalLayout_2">
+        <property name="spacing">
+         <number>3</number>
+        </property>
+        <property name="leftMargin">
+         <number>3</number>
+        </property>
+        <property name="topMargin">
+         <number>3</number>
+        </property>
+        <property name="rightMargin">
+         <number>3</number>
+        </property>
+        <property name="bottomMargin">
+         <number>3</number>
+        </property>
         <item>
          <widget class="QListView" name="lv_users"/>
         </item>
         <item>
          <layout class="QHBoxLayout" name="horizontalLayout_4">
+          <property name="spacing">
+           <number>3</number>
+          </property>
           <item>
            <widget class="QPushButton" name="btn_removeUser">
             <property name="text">
@@ -226,6 +298,21 @@
         <string>Sensors</string>
        </attribute>
        <layout class="QHBoxLayout" name="horizontalLayout_9" stretch="3,2">
+        <property name="spacing">
+         <number>3</number>
+        </property>
+        <property name="leftMargin">
+         <number>3</number>
+        </property>
+        <property name="topMargin">
+         <number>3</number>
+        </property>
+        <property name="rightMargin">
+         <number>3</number>
+        </property>
+        <property name="bottomMargin">
+         <number>3</number>
+        </property>
         <item>
          <widget class="QTableView" name="lv_sensors">
           <property name="sizeAdjustPolicy">
@@ -247,8 +334,14 @@
         </item>
         <item>
          <layout class="QVBoxLayout" name="verticalLayout_4">
+          <property name="spacing">
+           <number>3</number>
+          </property>
           <item>
            <layout class="QHBoxLayout" name="horizontalLayout_7">
+            <property name="spacing">
+             <number>3</number>
+            </property>
             <item>
              <widget class="QPushButton" name="btn_removeSensor">
               <property name="text">
@@ -283,6 +376,9 @@
           </item>
           <item>
            <layout class="QHBoxLayout" name="horizontalLayout_8">
+            <property name="spacing">
+             <number>3</number>
+            </property>
             <item>
              <widget class="QLabel" name="label_2">
               <property name="text">
@@ -324,13 +420,34 @@
         <string>Rules</string>
        </attribute>
        <layout class="QHBoxLayout" name="horizontalLayout_11" stretch="1,2">
+        <property name="spacing">
+         <number>3</number>
+        </property>
+        <property name="leftMargin">
+         <number>3</number>
+        </property>
+        <property name="topMargin">
+         <number>3</number>
+        </property>
+        <property name="rightMargin">
+         <number>3</number>
+        </property>
+        <property name="bottomMargin">
+         <number>3</number>
+        </property>
         <item>
          <layout class="QVBoxLayout" name="verticalLayout_6">
+          <property name="spacing">
+           <number>3</number>
+          </property>
           <item>
            <widget class="QListView" name="lv_rules"/>
           </item>
           <item>
            <layout class="QHBoxLayout" name="horizontalLayout">
+            <property name="spacing">
+             <number>3</number>
+            </property>
             <item>
              <widget class="QPushButton" name="btn_removeRule">
               <property name="text">
@@ -357,12 +474,30 @@
         </item>
         <item>
          <layout class="QVBoxLayout" name="verticalLayout_5">
+          <property name="spacing">
+           <number>3</number>
+          </property>
           <item>
            <widget class="QGroupBox" name="groupBox">
             <property name="title">
              <string>Conditions</string>
             </property>
             <layout class="QVBoxLayout" name="verticalLayout_8">
+             <property name="spacing">
+              <number>3</number>
+             </property>
+             <property name="leftMargin">
+              <number>3</number>
+             </property>
+             <property name="topMargin">
+              <number>3</number>
+             </property>
+             <property name="rightMargin">
+              <number>3</number>
+             </property>
+             <property name="bottomMargin">
+              <number>3</number>
+             </property>
              <item>
               <widget class="QTableView" name="lv_ruleConditions">
                <property name="selectionMode">
@@ -381,6 +516,9 @@
              </item>
              <item>
               <layout class="QHBoxLayout" name="horizontalLayout_12">
+               <property name="spacing">
+                <number>3</number>
+               </property>
                <item>
                 <widget class="QPushButton" name="pushButton">
                  <property name="text">
@@ -412,11 +550,29 @@
              <string>Actions</string>
             </property>
             <layout class="QVBoxLayout" name="verticalLayout_7">
+             <property name="spacing">
+              <number>3</number>
+             </property>
+             <property name="leftMargin">
+              <number>3</number>
+             </property>
+             <property name="topMargin">
+              <number>3</number>
+             </property>
+             <property name="rightMargin">
+              <number>3</number>
+             </property>
+             <property name="bottomMargin">
+              <number>3</number>
+             </property>
              <item>
               <widget class="QListView" name="lv_ruleActions"/>
              </item>
              <item>
               <layout class="QHBoxLayout" name="horizontalLayout_13">
+               <property name="spacing">
+                <number>3</number>
+               </property>
                <item>
                 <widget class="QPushButton" name="pushButton_2">
                  <property name="text">
