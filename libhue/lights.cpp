@@ -80,9 +80,9 @@ QVariant Lights::data(const QModelIndex &index, int role) const
     case RoleReachable:
         return light->reachable();
     case RoleIcon:
-        return QIcon(iconMap->getIcon(light->modelId(), false));
+        return QIcon(iconBasePath + "/" + iconMap->getIcon(light->modelId(), false));
     case RoleIconOutline:
-        return QIcon(iconMap->getIcon(light->modelId(), true));
+        return QIcon(iconBasePath + "/" + iconMap->getIcon(light->modelId(), true));
     }
 
     return QVariant();
@@ -130,6 +130,12 @@ Light *Lights::findLight(int lightId) const
 void Lights::searchForNewLights()
 {
     HueBridgeConnection::instance()->post("lights", QVariantMap(), this, "searchStarted");
+}
+
+void Lights::setIconBasePath(QString path)
+{
+    qDebug() << "Setting icon base path to" << path;
+    this->iconBasePath = path;
 }
 
 bool Lights::busy() const

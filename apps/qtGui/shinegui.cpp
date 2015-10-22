@@ -6,7 +6,15 @@ ShineGUI::ShineGUI(QWidget *parent) :
     ui(new Ui::ShineGUI)
 {
     ui->setupUi(this);
-    qDebug() << keystore.apiKey();
+    bridge = HueBridgeConnection::instance();
+    bridge->setApiKey(keystore.apiKey());
+
+    lights.setIconBasePath("../../icons");
+    lights.setAutoRefresh(true);
+    scenes.setAutoRefresh(true);
+
+    ui->lv_lights->setModel(&lights);
+    ui->lv_lights->setItemDelegate(&lightDelegate);
 }
 
 ShineGUI::~ShineGUI()

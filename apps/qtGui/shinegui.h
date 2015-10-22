@@ -4,6 +4,11 @@
 #include <QMainWindow>
 
 #include "keystore.h"
+#include "huebridgeconnection.h"
+
+#include "lights.h"
+#include "lightDelegate.h"
+#include "scenes.h"
 
 namespace Ui {
 class ShineGUI;
@@ -21,6 +26,11 @@ private:
     Ui::ShineGUI *ui;
 
     KeyStore keystore;
+    HueBridgeConnection *bridge;
+
+    Lights lights;
+    LightDelegate lightDelegate;
+    Scenes scenes;
 };
 
 #endif // SHINEGUI_H

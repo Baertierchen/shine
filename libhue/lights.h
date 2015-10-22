@@ -61,6 +61,8 @@ public:
 
     Q_INVOKABLE void searchForNewLights();
 
+    void setIconBasePath(QString path);
+
     bool busy() const;
 
 public slots:
@@ -83,6 +85,7 @@ private:
     QList<Light*> m_list;
     bool m_busy;
     IconMap *iconMap;
+    QString iconBasePath;
 };
 
 #endif // LIGHTS_H
