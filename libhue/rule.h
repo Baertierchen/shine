@@ -23,13 +23,15 @@
 #include <QObject>
 #include <QAbstractListModel>
 
+#include "conditions.h"
+
 class Rule: public QObject
 {
     Q_OBJECT
 
     Q_PROPERTY(QString id READ id CONSTANT)
     Q_PROPERTY(QString name READ name WRITE setName NOTIFY nameChanged)
-    Q_PROPERTY(QVariantList conditions READ conditions NOTIFY conditionsChanged)
+    //Q_PROPERTY(QVariantList conditions READ conditions NOTIFY conditionsChanged)
     Q_PROPERTY(QVariantList actions READ actions NOTIFY actionsChanged)
 
 public:
@@ -40,7 +42,7 @@ public:
     QString name() const;
     void setName(const QString &name);
 
-    QVariantList conditions() const;
+    Conditions* conditions();
     void setConditions(const QVariantList &conditions);
 
     QVariantList actions() const;
@@ -57,7 +59,7 @@ signals:
 private:
     QString m_id;
     QString m_name;
-    QVariantList m_conditions;
+    Conditions m_conditions;
     QVariantList m_actions;
 };
 

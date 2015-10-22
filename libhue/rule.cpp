@@ -49,17 +49,15 @@ void Rule::setName(const QString &name)
     }
 }
 
-QVariantList Rule::conditions() const
+Conditions* Rule::conditions()
 {
-    return m_conditions;
+    return &m_conditions;
 }
 
 void Rule::setConditions(const QVariantList &conditions)
 {
-    if (m_conditions != conditions) {
-        m_conditions = conditions;
-        emit conditionsChanged();
-    }
+    m_conditions.setConditions(conditions);
+    emit conditionsChanged();
 }
 
 QVariantList Rule::actions() const

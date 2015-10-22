@@ -34,7 +34,6 @@ public:
     enum Roles {
         RoleId = Qt::UserRole,
         RoleName,
-        RoleConditions,
         RoleActions
     };
 
