@@ -42,7 +42,7 @@ public:
         RoleStatus
     };
 
-    explicit Sensors(QObject *parent = 0);
+    static Sensors *instance();
 
     virtual QVariant headerData(int section, Qt::Orientation orientation, int role) const;
     int rowCount(const QModelIndex &parent) const;
@@ -68,6 +68,9 @@ private slots:
     void sensorCreated(int id, const QVariant &response);
 
 private:
+    Sensors(QObject *parent = 0);
+    static Sensors *s_instance;
+
     QList<Sensor*> m_list;
     bool m_busy;
 };

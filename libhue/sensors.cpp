@@ -27,6 +27,8 @@
 #include <QColor>
 #include <QCoreApplication>
 
+Sensors *Sensors::s_instance = NULL;
+
 Sensors::Sensors(QObject *parent):
     HueModel(parent),
     m_busy(false)
@@ -34,6 +36,14 @@ Sensors::Sensors(QObject *parent):
 #if QT_VERSION < 0x050000
     setRoleNames(roleNames());
 #endif
+}
+
+Sensors *Sensors::instance()
+{
+    if (s_instance == NULL){
+        s_instance = new Sensors();
+    }
+    return s_instance;
 }
 
 QVariant Sensors::headerData(int section, Qt::Orientation orientation, int role) const
