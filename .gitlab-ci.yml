@@ -5,3 +5,5 @@ build:
     - cmake ..
     - make
   stage: build
+  tags:
+    - Qt5
