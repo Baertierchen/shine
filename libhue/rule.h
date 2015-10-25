@@ -23,6 +23,7 @@
 #include <QObject>
 #include <QAbstractListModel>
 
+#include "huebridgeconnection.h"
 #include "conditions.h"
 #include "actions.h"
 
@@ -51,6 +52,7 @@ public:
 
 public slots:
     void refresh();
+    void updateFinished(int id, const QVariant &response);
 
 signals:
     void nameChanged();
@@ -58,6 +60,7 @@ signals:
     void actionsChanged();
 
 private:
+    HueBridgeConnection* m_connection;
     QString m_id;
     QString m_name;
     Conditions m_conditions;

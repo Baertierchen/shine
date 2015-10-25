@@ -28,7 +28,10 @@ Rule::Rule(const QString &id, const QString &name, QObject *parent)
     , m_id(id)
     , m_name(name)
 {
+    m_connection = HueBridgeConnection::instance();
 //    refresh();
+    m_conditions.setRuleID(id);
+    m_actions.setRuleID(id);
 }
 
 QString Rule::id() const
@@ -45,6 +48,11 @@ void Rule::setName(const QString &name)
 {
     if (m_name != name) {
         m_name = name;
+        QString address = "rules/";
+        address.append(m_id);
+        QVariantMap map;
+        map.insert("name", name);
+        m_connection->put(address, map, this, "updateFinished");
         emit nameChanged();
     }
 }
@@ -73,4 +81,17 @@ void Rule::setActions(const QVariantList &actions)
 
 void Rule::refresh()
 {
+}
+
+void Rule::updateFinished(int id, const QVariant &response)
+{
+    Q_UNUSED(id)
+
+    QVariantMap result = response.toList().first().toMap();
+
+    if (result.contains("success")) {
+        refresh();
+    }else{
+        qDebug() << "An error occured while updating rule:" << response;
+    }
 }
