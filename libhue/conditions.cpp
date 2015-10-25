@@ -29,6 +29,7 @@ Conditions::Conditions(QObject *parent) :
     Q_UNUSED(parent)
 
     m_sensors = Sensors::instance();
+    m_connection = HueBridgeConnection::instance();
 #if QT_VERSION < 0x050000
     setRoleNames(roleNames());
 #endif
@@ -64,8 +65,7 @@ QVariant Conditions::data(const QModelIndex &index, int role) const
     Condition *condition = m_list.at(index.row());
     switch (role) {
     case RoleSensor:
-        if (condition->sensor() == NULL) return "";
-        return condition->sensor()->id();
+        return condition->sensorID();
     case RoleResource:
         return condition->resource();
     case RoleOperator:
@@ -94,6 +94,11 @@ Condition *Conditions::get(int index) const
     return 0;
 }
 
+void Conditions::setRuleID(QString ID)
+{
+    this->m_ruleID = ID;
+}
+
 bool Conditions::setConditions(QVariantList conditions)
 {
     if (m_sensors == NULL) return false;
@@ -120,10 +125,55 @@ bool Conditions::setConditions(QVariantList conditions)
         else if (opStr == "dx") op = Condition::dx;
         else op = Condition::unknown;
 
-        Condition *cond = new Condition(m_sensors->findSensor(sensorID), resource, op, conditionMap.value("value").toString());
+        Condition *cond = new Condition(sensorID, resource, op, conditionMap.value("value").toString());
         m_list.append(cond);
     }
     endInsertRows();
 
     return true;
+}
+
+void Conditions::addCondition(QString sensorID, QString resource, const Condition::Operator op, QString value)
+{
+    Condition* cond = new Condition(sensorID, resource, op, value);
+
+    beginInsertRows(QModelIndex(), m_list.size(), m_list.size());
+    m_list.append(cond);
+    endInsertRows();
+
+    pushUpdates();
+}
+
+void Conditions::deleteCondition(int index)
+{
+    beginRemoveRows(QModelIndex(), index, index);
+    m_list.removeAt(index);
+    endRemoveRows();
+
+    pushUpdates();
+}
+
+void Conditions::updateFinished(int id, const QVariant &response)
+{
+    Q_UNUSED(id)
+
+    QVariantMap result = response.toList().first().toMap();
+
+    if (!result.contains("success")) {
+        qDebug() << "An error occured while updating conditions:" << response;
+    }
+}
+
+void Conditions::pushUpdates()
+{
+    QVariantList conditionList;
+    foreach (Condition* condition, m_list){
+        conditionList.append(condition->getVariantMap());
+    }
+    QString address = "rules/";
+    address.append(m_ruleID);
+
+    QVariantMap map;
+    map.insert("conditions", conditionList);
+    m_connection->put(address, map, this, "updateFinished");
 }

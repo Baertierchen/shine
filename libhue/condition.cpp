@@ -19,8 +19,8 @@
 
 #include "condition.h"
 
-Condition::Condition(Sensor* sensor, QString resource, const Operator op, QString value, QObject *parent) :
-    m_sensor(sensor),
+Condition::Condition(QString sensorID, QString resource, const Operator op, QString value, QObject *parent) :
+    m_sensorID(sensorID),
     m_resource(resource),
     m_op(op),
     m_value(value)
@@ -28,9 +28,35 @@ Condition::Condition(Sensor* sensor, QString resource, const Operator op, QStrin
     Q_UNUSED(parent);
 }
 
-Sensor *Condition::sensor()
+QVariantMap Condition::getVariantMap()
 {
-    return m_sensor;
+    QVariantMap map;
+    QString address = "/sensors/";
+    address.append(m_sensorID);
+    address.append(m_resource);
+
+    map.insert("address", address);
+
+    QString op;
+    switch (m_op){
+    case eq: op = "eq"; break;
+    case gt: op = "gt"; break;
+    case lt: op = "lt"; break;
+    case dx: op = "dx"; break;
+    case unknown: return map;
+    }
+    map.insert("operator", op);
+
+    if (m_op != dx){
+        map.insert("value", m_value);
+    }
+
+    return map;
+}
+
+QString Condition::sensorID()
+{
+    return m_sensorID;
 }
 
 QString Condition::resource()

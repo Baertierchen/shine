@@ -23,6 +23,7 @@
 #include <QAbstractListModel>
 #include <QRegExp>
 
+#include "huebridgeconnection.h"
 #include "huemodel.h"
 #include "condition.h"
 #include "sensors.h"
@@ -47,10 +48,21 @@ public:
     QHash<int, QByteArray> roleNames() const;
     Q_INVOKABLE Condition* get(int index) const;
 
+    void setRuleID(QString ID);
     bool setConditions(QVariantList conditions);
 
+    void addCondition(QString sensorID, QString resource, const Condition::Operator op, QString value);
+    void deleteCondition(int index);
+
+private slots:
+    void updateFinished(int id, const QVariant &response);
+
 private:
+    void pushUpdates();
+
+    HueBridgeConnection *m_connection;
     QList<Condition*> m_list;
+    QString m_ruleID;
     Sensors* m_sensors;
 };
 

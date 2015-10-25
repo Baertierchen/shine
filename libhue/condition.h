@@ -22,6 +22,7 @@
 
 #include <QObject>
 #include <QAbstractListModel>
+#include <QDebug>
 
 #include "sensor.h"
 
@@ -34,9 +35,11 @@ public:
         eq, gt, lt, dx, unknown
     };
 
-    Condition(Sensor* sensor, QString resource, const Operator op, QString value, QObject *parent = 0);
+    Condition(QString sensorID, QString resource, const Operator op, QString value, QObject *parent = 0);
 
-    Sensor* sensor();
+    QVariantMap getVariantMap();
+
+    QString sensorID();
     QString resource();
     Operator op();
     QString value();
@@ -44,7 +47,7 @@ public:
 signals:
 
 private:
-    Sensor* m_sensor;
+    QString m_sensorID;
     QString m_resource;
     Operator m_op;
     QString m_value;
