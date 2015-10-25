@@ -60,17 +60,15 @@ void Rule::setConditions(const QVariantList &conditions)
     emit conditionsChanged();
 }
 
-QVariantList Rule::actions() const
+Actions* Rule::actions()
 {
-    return m_actions;
+    return &m_actions;
 }
 
 void Rule::setActions(const QVariantList &actions)
 {
-    if (m_actions != actions) {
-        m_actions = actions;
-        emit actionsChanged();
-    }
+    m_actions.setActions(actions);
+    emit actionsChanged();
 }
 
 void Rule::refresh()

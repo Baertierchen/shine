@@ -24,6 +24,7 @@
 #include <QAbstractListModel>
 
 #include "conditions.h"
+#include "actions.h"
 
 class Rule: public QObject
 {
@@ -32,7 +33,7 @@ class Rule: public QObject
     Q_PROPERTY(QString id READ id CONSTANT)
     Q_PROPERTY(QString name READ name WRITE setName NOTIFY nameChanged)
     //Q_PROPERTY(QVariantList conditions READ conditions NOTIFY conditionsChanged)
-    Q_PROPERTY(QVariantList actions READ actions NOTIFY actionsChanged)
+    //Q_PROPERTY(QVariantList actions READ actions NOTIFY actionsChanged)
 
 public:
     Rule(const QString &id, const QString &name, QObject *parent = 0);
@@ -45,7 +46,7 @@ public:
     Conditions* conditions();
     void setConditions(const QVariantList &conditions);
 
-    QVariantList actions() const;
+    Actions *actions();
     void setActions(const QVariantList &actions);
 
 public slots:
@@ -60,7 +61,7 @@ private:
     QString m_id;
     QString m_name;
     Conditions m_conditions;
-    QVariantList m_actions;
+    Actions m_actions;
 };
 
 #endif

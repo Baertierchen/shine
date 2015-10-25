@@ -17,33 +17,37 @@
  *      Steffen Köhler <mail@steffenkoehler.net>
  */
 
-#ifndef ACTION_H
-#define ACTION_H
+#ifndef ACTIONS_H
+#define ACTIONS_H
 
-#include <QObject>
 #include <QAbstractListModel>
 
-class Action: public QObject
+#include "huemodel.h"
+#include "action.h"
+
+class Actions : public QAbstractListModel
 {
     Q_OBJECT
-
 public:
-    enum Method{
-        POST, PUT, DELETE, Unknown
+    enum Roles {
+        RoleAddress = Qt::UserRole,
+        RoleMethod,
+        RoleBody
     };
 
-    Action(QString address, Method method, QString body, QObject *parent = 0);
+    explicit Actions(QObject *parent = 0);
 
-    QString address();
-    Method method();
-    QString body();
+    int rowCount(const QModelIndex &parent) const;
+    virtual int columnCount(const QModelIndex &parent) const;
+    virtual QVariant headerData(int section, Qt::Orientation orientation, int role) const;
+    QVariant data(const QModelIndex &index, int role) const;
+    QHash<int, QByteArray> roleNames() const;
+    Q_INVOKABLE Action* get(int index) const;
 
-signals:
+    bool setActions(QVariantList actions);
 
 private:
-    QString m_address;
-    Method m_method;
-    QString m_body;
+    QList<Action*> m_list;
 };
 
-#endif
+#endif // ACTIONS_H

@@ -33,8 +33,7 @@ class Rules: public HueModel
 public:
     enum Roles {
         RoleId = Qt::UserRole,
-        RoleName,
-        RoleActions
+        RoleName
     };
 
     enum DimAction {
