@@ -29,8 +29,7 @@
 IconMap* IconMap::s_instance = NULL;
 
 Lights::Lights(QObject *parent) :
-    HueModel(parent),
-    m_busy(false)
+    HueModel(parent)
 {
 #if QT_VERSION < 0x050000
     setRoleNames(roleNames());
@@ -136,11 +135,6 @@ void Lights::setIconBasePath(QString path)
 {
     qDebug() << "Setting icon base path to" << path;
     this->iconBasePath = path;
-}
-
-bool Lights::busy() const
-{
-    return m_busy;
 }
 
 void Lights::refresh()

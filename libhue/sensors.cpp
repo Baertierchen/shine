@@ -29,8 +29,7 @@
 Sensors *Sensors::s_instance = NULL;
 
 Sensors::Sensors(QObject *parent):
-    HueModel(parent),
-    m_busy(false)
+    HueModel(parent)
 {
 #if QT_VERSION < 0x050000
     setRoleNames(roleNames());
@@ -193,11 +192,6 @@ Sensor *Sensors::findOrCreateHelperSensor(const QString &name, const QString &un
         qApp->processEvents();
     }
     return sensor;
-}
-
-bool Sensors::busy() const
-{
-    return m_busy;
 }
 
 void Sensors::refresh()

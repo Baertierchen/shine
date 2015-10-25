@@ -27,8 +27,7 @@
 #include <QColor>
 
 Schedules::Schedules(QObject *parent):
-    HueModel(parent),
-    m_busy(false)
+    HueModel(parent)
 {
 
 #if QT_VERSION < 0x050000
@@ -91,11 +90,6 @@ Schedule *Schedules::findSchedule(const QString &id) const
         }
     }
     return 0;
-}
-
-bool Schedules::busy() const
-{
-    return m_busy;
 }
 
 void Schedules::createSingleAlarmForScene(const QString &name, const QString &sceneId, const QDateTime &dateTime)

@@ -45,8 +45,6 @@ public:
     QHash<int, QByteArray> roleNames() const;
     Q_INVOKABLE User* get(int index) const;
 
-    virtual bool busy() const;
-
 public slots:
     void usersReceived(int id, const QVariant &variant);
     void deleteUserFinished(int id, const QVariant &variant);
@@ -55,7 +53,6 @@ public slots:
 
 private:
     QList<User*> m_list;
-    bool m_busy;
 };
 
 #endif // USERS_H

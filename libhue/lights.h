@@ -63,8 +63,6 @@ public:
 
     void setIconBasePath(QString path);
 
-    bool busy() const;
-
 public slots:
     void refresh();
 
@@ -83,7 +81,6 @@ private:
 
 private:
     QList<Light*> m_list;
-    bool m_busy;
     IconMap *iconMap;
     QString iconBasePath;
 };

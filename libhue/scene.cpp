@@ -106,8 +106,3 @@ QVariant Scene::data(const QModelIndex &index, int role) const
     }
     return QVariant();
 }
-
-bool Scene::busy() const
-{
-    return m_busy;
-}

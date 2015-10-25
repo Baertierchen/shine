@@ -38,7 +38,7 @@ public:
 
     bool autoRefresh() const;
     void setAutoRefresh(bool autoRefresh);
-    virtual bool busy() const = 0;
+    bool busy() const;
 
 public slots:
     virtual void refresh() = 0;
@@ -47,6 +47,9 @@ signals:
     void countChanged();
     void autoRefreshChanged();
     void busyChanged();
+
+protected:
+    bool m_busy;
 
 private:
     QTimer m_refreshTimer;

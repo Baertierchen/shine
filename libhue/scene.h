@@ -52,8 +52,6 @@ public:
 
     Q_INVOKABLE bool containsLight(int index) const;
 
-    virtual bool busy() const;
-
 public slots:
     void refresh();
 
@@ -65,7 +63,6 @@ private:
     QString m_id;
     QString m_name;
     QList<int> m_lightIds;
-    bool m_busy;
 };
 
 #endif

@@ -25,8 +25,7 @@
 #include <QDebug>
 
 Groups::Groups(QObject *parent)
-    : HueModel(parent),
-      m_busy(false)
+    : HueModel(parent)
 {
 #if QT_VERSION < 0x050000
     setRoleNames(roleNames());
@@ -103,11 +102,6 @@ Group *Groups::findGroup(int id) const
         }
     }
     return 0;
-}
-
-bool Groups::busy() const
-{
-    return m_busy;
 }
 
 void Groups::refresh()

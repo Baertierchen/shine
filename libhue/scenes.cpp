@@ -26,8 +26,7 @@
 #include <QUuid>
 
 Scenes::Scenes(QObject *parent):
-    HueModel(parent),
-    m_busy(false)
+    HueModel(parent)
 {
 #if QT_VERSION < 0x050000
     setRoleNames(roleNames());
@@ -84,11 +83,6 @@ void Scenes::recallScene(const QString &id)
     QVariantMap params;
     params.insert("scene", id);
     HueBridgeConnection::instance()->put("groups/0/action", params, this, "recallSceneFinished");
-}
-
-bool Scenes::busy() const
-{
-    return m_busy;
 }
 
 void Scenes::refresh()

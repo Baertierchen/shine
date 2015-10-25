@@ -21,7 +21,8 @@
 #include "huebridgeconnection.h"
 
 HueModel::HueModel(QObject *parent) :
-    QAbstractListModel(parent)
+    QAbstractListModel(parent),
+    m_busy(false)
 {
     connect(&m_refreshTimer, SIGNAL(timeout()), this, SLOT(refresh()));
     m_refreshTimer.setInterval(3000);
@@ -48,4 +49,9 @@ void HueModel::setAutoRefresh(bool autoRefresh)
         refresh();
         emit autoRefreshChanged();
     }
+}
+
+bool HueModel::busy() const
+{
+    return m_busy;
 }

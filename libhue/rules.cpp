@@ -27,8 +27,7 @@
 #include <QColor>
 
 Rules::Rules(QObject *parent):
-    HueModel(parent),
-    m_busy(false)
+    HueModel(parent)
 {
 #if QT_VERSION < 0x050000
     setRoleNames(roleNames());
@@ -254,11 +253,6 @@ QVariantMap Rules::createSceneAction(const QString &sceneId)
     body.insert("scene", sceneId);
     action.insert("body", body);
     return action;
-}
-
-bool Rules::busy() const
-{
-    return m_busy;
 }
 
 void Rules::refresh()

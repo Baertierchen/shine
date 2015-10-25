@@ -43,8 +43,6 @@ public:
 
     Q_INVOKABLE void recallScene(const QString &id);
 
-    bool busy() const;
-
 public slots:
     Q_INVOKABLE void createScene(const QString &name, const QList<int> &lights);
     Q_INVOKABLE void updateScene(const QString &id, const QString &name, const QList<int> &lights);
@@ -63,7 +61,6 @@ private:
     Scene* createSceneInternal(const QString &id, const QString &name, const QList<int> lights);
 
     QList<Scene*> m_list;
-    bool m_busy;
 };
 
 #endif // SCENES_H

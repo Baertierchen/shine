@@ -151,9 +151,3 @@ void Users::deleteUserFinished(int id, const QVariant &response)
     m_busy = false;
     emit busyChanged();
 }
-
-
-bool Users::busy() const
-{
-    return m_busy;
-}
