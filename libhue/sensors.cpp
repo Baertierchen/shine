@@ -86,6 +86,8 @@ QVariant Sensors::data(const QModelIndex &index, int role) const
 {
     Sensor *sensor = m_list.at(index.row());
     switch (role) {
+    case Qt::DisplayRole:
+        return sensor->name();
     case RoleId:
         return sensor->id();
     case RoleName:
