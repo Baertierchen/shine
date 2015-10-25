@@ -21,6 +21,7 @@
 #define SENSORS_H
 
 #include "huemodel.h"
+#include "sensor.h"
 
 #include <QTimer>
 

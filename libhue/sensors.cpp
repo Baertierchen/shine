@@ -18,7 +18,6 @@
  */
 
 #include "sensors.h"
-#include "sensor.h"
 
 #include "huebridgeconnection.h"
 

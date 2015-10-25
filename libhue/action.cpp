@@ -17,15 +17,16 @@
  *      Steffen Köhler <mail@steffenkoehler.net>
  */
 
+#include <QDebug>
+
 #include "action.h"
 
-Action::Action(QString address, Action::Method method, QString body, QObject *parent) :
+Action::Action(QString address, Action::Method method, QVariantMap body, QObject *parent) :
+    QObject(parent),
     m_address(address),
     m_method(method),
-    m_body(body),
-    QObject(parent)
+    m_body(body)
 {
-
 }
 
 QString Action::address()
@@ -38,7 +39,7 @@ Action::Method Action::method()
     return m_method;
 }
 
-QString Action::body()
+QVariantMap Action::body()
 {
     return m_body;
 }

@@ -99,7 +99,7 @@ bool Actions::setActions(QVariantList actions)
         QVariantMap actionMap = action.toMap();
         QString address = actionMap.value("address").toString();
         QString methodStr = actionMap.value("method").toString();
-        QString body = actionMap.value("body").toString();
+        QVariantMap body = actionMap.value("body").toMap();
 
         Action::Method method;
         if (methodStr == "POST") method = Action::POST;

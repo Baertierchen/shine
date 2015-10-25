@@ -32,18 +32,18 @@ public:
         POST, PUT, DELETE, Unknown
     };
 
-    Action(QString address, Method method, QString body, QObject *parent = 0);
+    Action(QString address, Method method, QVariantMap body, QObject *parent = 0);
 
     QString address();
     Method method();
-    QString body();
+    QVariantMap body();
 
 signals:
 
 private:
     QString m_address;
     Method m_method;
-    QString m_body;
+    QVariantMap m_body;
 };
 
 #endif
