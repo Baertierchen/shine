@@ -76,8 +76,6 @@ private slots:
 
 private:
     Schedule* createScheduleInternal(const QString &id, const QString &name);
-
-    QList<Schedule*> m_list;
 };
 
 #endif

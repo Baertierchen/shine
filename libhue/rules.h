@@ -77,8 +77,6 @@ private slots:
 
 private:
     Rule* createRuleInternal(const QString &id, const QString &name);
-
-    QList<Rule*> m_list;
 };
 
 #endif

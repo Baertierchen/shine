@@ -80,7 +80,6 @@ private:
     void parseStateMap(Light *light, const QVariantMap &stateMap);
 
 private:
-    QList<Light*> m_list;
     IconMap *iconMap;
     QString iconBasePath;
 };

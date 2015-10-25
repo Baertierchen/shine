@@ -24,7 +24,7 @@
 #include <QDebug>
 
 Actions::Actions(QObject *parent) :
-    QAbstractListModel(parent)
+    HueModel(parent)
 {
     Q_UNUSED(parent)
 
@@ -60,7 +60,7 @@ QVariant Actions::headerData(int section, Qt::Orientation orientation, int role)
 
 QVariant Actions::data(const QModelIndex &index, int role) const
 {
-    Action *action = m_list.at(index.row());
+    Action *action = (Action*)m_list.at(index.row());
     switch (role) {
     case RoleAddress:
         return action->address();
@@ -84,7 +84,7 @@ QHash<int, QByteArray> Actions::roleNames() const
 Action *Actions::get(int index) const
 {
     if (index > -1 && index < m_list.count()) {
-        return m_list.at(index);
+        return (Action*)m_list.at(index);
     }
     return 0;
 }
@@ -152,11 +152,16 @@ void Actions::updateFinished(int id, const QVariant &response)
     }
 }
 
+void Actions::refresh()
+{
+
+}
+
 void Actions::pushUpdates()
 {
     QVariantList actionList;
-    foreach (Action* action, m_list){
-        actionList.append(action->getVariantMap());
+    foreach (QObject* action, m_list){
+        actionList.append(((Action*)action)->getVariantMap());
     }
     QString address = "rules/";
     address.append(m_ruleID);

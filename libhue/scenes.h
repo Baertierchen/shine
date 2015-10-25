@@ -59,8 +59,6 @@ private slots:
 
 private:
     Scene* createSceneInternal(const QString &id, const QString &name, const QList<int> lights);
-
-    QList<Scene*> m_list;
 };
 
 #endif // SCENES_H

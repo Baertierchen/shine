@@ -41,7 +41,7 @@ int Scenes::rowCount(const QModelIndex &parent) const
 
 QVariant Scenes::data(const QModelIndex &index, int role) const
 {
-    Scene *scene= m_list.at(index.row());
+    Scene *scene= (Scene*)m_list.at(index.row());
     switch (role) {
     case RoleId:
         return scene->id();
@@ -63,14 +63,15 @@ QHash<int, QByteArray> Scenes::roleNames() const
 Scene *Scenes::get(int index) const
 {
     if (index > -1 && index  < m_list.count()) {
-        return m_list.at(index);
+        return (Scene*)m_list.at(index);
     }
     return 0;
 }
 
 Scene *Scenes::findScene(const QString &id) const
 {
-    foreach (Scene *scene, m_list) {
+    foreach (QObject *sceneObj, m_list) {
+        Scene *scene = (Scene*)sceneObj;
         if (scene->id() == id) {
             return scene;
         }
@@ -98,7 +99,8 @@ void Scenes::scenesReceived(int id, const QVariant &variant)
     Q_UNUSED(id)
     QVariantMap scenes = variant.toMap();
     QList<Scene*> removedScenes;
-    foreach (Scene *scene, m_list) {
+    foreach (QObject *sceneObj, m_list) {
+        Scene *scene = (Scene*)sceneObj;
         if (!scenes.contains(scene->id())) {
 //            qDebug() << "removing scene" << scene->id();
             removedScenes.append(scene);

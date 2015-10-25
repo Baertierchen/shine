@@ -24,7 +24,7 @@
 #include <QDebug>
 
 Conditions::Conditions(QObject *parent) :
-    QAbstractListModel(parent)
+    HueModel(parent)
 {
     Q_UNUSED(parent)
 
@@ -62,7 +62,7 @@ QVariant Conditions::headerData(int section, Qt::Orientation orientation, int ro
 
 QVariant Conditions::data(const QModelIndex &index, int role) const
 {
-    Condition *condition = m_list.at(index.row());
+    Condition *condition = (Condition*)m_list.at(index.row());
     switch (role) {
     case RoleSensor:
         return condition->sensorID();
@@ -89,7 +89,7 @@ QHash<int, QByteArray> Conditions::roleNames() const
 Condition *Conditions::get(int index) const
 {
     if (index > -1 && index < m_list.count()) {
-        return m_list.at(index);
+        return (Condition*)m_list.at(index);
     }
     return 0;
 }
@@ -164,10 +164,16 @@ void Conditions::updateFinished(int id, const QVariant &response)
     }
 }
 
+void Conditions::refresh()
+{
+
+}
+
 void Conditions::pushUpdates()
 {
     QVariantList conditionList;
-    foreach (Condition* condition, m_list){
+    foreach (QObject* conditionObj, m_list){
+        Condition* condition = (Condition*) conditionObj;
         conditionList.append(condition->getVariantMap());
     }
     QString address = "rules/";

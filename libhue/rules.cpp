@@ -42,7 +42,7 @@ int Rules::rowCount(const QModelIndex &parent) const
 
 QVariant Rules::data(const QModelIndex &index, int role) const
 {
-    Rule *rule = m_list.at(index.row());
+    Rule *rule = (Rule*)m_list.at(index.row());
     switch (role) {
     case RoleId:
         return rule->id();
@@ -64,14 +64,15 @@ QHash<int, QByteArray> Rules::roleNames() const
 Rule *Rules::get(int index) const
 {
     if (index > -1 && index  < m_list.count()) {
-        return m_list.at(index);
+        return (Rule*)m_list.at(index);
     }
     return 0;
 }
 
 Rule* Rules::findRule(const QString &id) const
 {
-    foreach (Rule *rule, m_list) {
+    foreach (QObject *ruleObj, m_list) {
+        Rule* rule = (Rule*)ruleObj;
         if (rule->id() == id) {
             return rule;
         }
@@ -268,7 +269,8 @@ void Rules::rulesReceived(int id, const QVariant &variant)
     Q_UNUSED(id)
     QVariantMap rules = variant.toMap();
     QList<Rule*> removedRules;
-    foreach (Rule *rule, m_list) {
+    foreach (QObject *ruleObj, m_list) {
+        Rule* rule = (Rule*)ruleObj;
         if (!rules.contains(rule->id())) {
             removedRules.append(rule);
         }

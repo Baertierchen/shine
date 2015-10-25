@@ -40,7 +40,7 @@ int Groups::rowCount(const QModelIndex &parent) const
 
 QVariant Groups::data(const QModelIndex &index, int role) const
 {
-    Group *group = m_list.at(index.row());
+    Group *group = (Group*)m_list.at(index.row());
     switch (role) {
     case RoleId:
         return group->id();
@@ -89,14 +89,15 @@ QHash<int, QByteArray> Groups::roleNames() const
 Group *Groups::get(int index) const
 {
     if (index > -1 && index  < m_list.count()) {
-        return m_list.at(index);
+        return (Group*)m_list.at(index);
     }
     return 0;
 }
 
 Group *Groups::findGroup(int id) const
 {
-    foreach (Group *group, m_list) {
+    foreach (QObject *groupObj, m_list) {
+        Group *group = (Group*)groupObj;
         if (group->id() == id) {
             return group;
         }
@@ -127,7 +128,8 @@ void Groups::groupsReceived(int id, const QVariant &variant)
 
     QVariantMap groups = variant.toMap();
     QList<Group*> removedGroups;
-    foreach (Group *group, m_list) {
+    foreach (QObject *groupObj, m_list) {
+        Group *group = (Group*)groupObj;
         if (group->id() != 0 && !groups.contains(QString::number(group->id()))) {
             removedGroups.append(group);
         }

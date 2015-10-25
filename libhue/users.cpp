@@ -43,7 +43,7 @@ int Users::rowCount(const QModelIndex &parent) const
 
 QVariant Users::data(const QModelIndex &index, int role) const
 {
-    User *user = m_list.at(index.row());
+    User *user = (User*)m_list.at(index.row());
     switch (role) {
     case RoleId:
         return user->id();
@@ -71,7 +71,7 @@ QHash<int, QByteArray> Users::roleNames() const
 User *Users::get(int index) const
 {
     if (index > -1 && index < m_list.count()) {
-        return m_list.at(index);
+        return (User*)m_list.at(index);
     }
     return 0;
 }
@@ -89,25 +89,27 @@ void Users::usersReceived(int id, const QVariant &variant)
     User* newUser;
     QVariantMap users = variant.toMap().value("whitelist").toMap();
 
-    QList<User*> removedUsers;
-    foreach (User *user, m_list) {
+    QList<QObject*> removedUsers;
+    foreach (QObject *userObj, m_list) {
+        User *user = (User*)userObj;
         if (!users.contains(user->id())) {
             removedUsers.append(user);
         }
     }
 
-    foreach (User *user, removedUsers) {
-        int index = m_list.indexOf(user);
+    foreach (QObject *userObj, removedUsers) {
+        int index = m_list.indexOf(userObj);
         beginRemoveRows(QModelIndex(), index, index);
         delete m_list.takeAt(index);
         endRemoveRows();
     }
 
     // Update existing lights's name and keep track of newly added lights
-    QList <User*> newUsers;
+    QList <QObject*> newUsers;
     foreach (const QString &userId, users.keys()) {
         bool existing = false;
-        foreach (User *user, m_list) {
+        foreach (QObject *userObj, m_list) {
+            User *user = (User*)userObj;
             if (user->id() == userId) {
                 existing = true;
                 break;

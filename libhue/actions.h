@@ -26,7 +26,7 @@
 #include "huemodel.h"
 #include "action.h"
 
-class Actions : public QAbstractListModel
+class Actions : public HueModel
 {
     Q_OBJECT
 public:
@@ -54,12 +54,15 @@ public:
 private slots:
     void updateFinished(int id, const QVariant &response);
 
+    // HueModel interface
+public slots:
+    virtual void refresh();
+
 private:
     void pushUpdates();
 
     HueBridgeConnection *m_connection;
     QString m_ruleID;
-    QList<Action*> m_list;
 };
 
 #endif // ACTIONS_H

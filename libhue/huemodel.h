@@ -50,6 +50,7 @@ signals:
 
 protected:
     bool m_busy;
+    QList<QObject*> m_list;
 
 private:
     QTimer m_refreshTimer;

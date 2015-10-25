@@ -20,10 +20,12 @@
 #ifndef USER_H
 #define USER_H
 
+#include <QObject>
 #include <QString>
 
-class User
+class User : public QObject
 {
+    Q_OBJECT
 
 public:
     User(const QString &id, const QString &name, const QString &lastUsed, const QString &created);

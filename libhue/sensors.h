@@ -67,8 +67,6 @@ private slots:
 private:
     Sensors(QObject *parent = 0);
     static Sensors *s_instance;
-
-    QList<Sensor*> m_list;
 };
 
 #endif // SCENES_H

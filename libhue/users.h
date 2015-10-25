@@ -50,9 +50,6 @@ public slots:
     void deleteUserFinished(int id, const QVariant &variant);
     void refresh();
     Q_INVOKABLE void deleteUser(int index);
-
-private:
-    QList<User*> m_list;
 };
 
 #endif // USERS_H

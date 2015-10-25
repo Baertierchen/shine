@@ -74,7 +74,6 @@ private:
     void parseStateMap(Group* group, const QVariantMap &stateMap);
 
     QHash<int, bool> m_lights;
-    QList<Group*> m_list;
 };
 
 #endif // GROUPS_H

@@ -43,7 +43,7 @@ int Schedules::rowCount(const QModelIndex &parent) const
 
 QVariant Schedules::data(const QModelIndex &index, int role) const
 {
-    Schedule *schedule = m_list.at(index.row());
+    Schedule *schedule = (Schedule*)m_list.at(index.row());
     switch (role) {
     case RoleId:
         return schedule->id();
@@ -77,16 +77,17 @@ QHash<int, QByteArray> Schedules::roleNames() const
 Schedule *Schedules::get(int index) const
 {
     if (index > -1 && index  < m_list.count()) {
-        return m_list.at(index);
+        return (Schedule*)m_list.at(index);
     }
     return 0;
 }
 
 Schedule *Schedules::findSchedule(const QString &id) const
 {
-    foreach (Schedule *scene, m_list) {
-        if (scene->id() == id) {
-            return scene;
+    foreach (QObject *scheduleObj, m_list) {
+        Schedule *schedule = (Schedule*) scheduleObj;
+        if (schedule->id() == id) {
+            return schedule;
         }
     }
     return 0;
@@ -224,7 +225,8 @@ void Schedules::schedulesReceived(int id, const QVariant &variant)
     Q_UNUSED(id)
     QVariantMap schedules = variant.toMap();
     QList<Schedule*> removedSchedules;
-    foreach (Schedule *schedule, m_list) {
+    foreach (QObject *scheduleObj, m_list) {
+        Schedule* schedule = (Schedule*) scheduleObj;
         if (!schedules.contains(schedule->id())) {
 //            qDebug() << "removing schedule" << schedule->id();
             removedSchedules.append(schedule);

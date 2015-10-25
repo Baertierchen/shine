@@ -45,7 +45,7 @@ int Lights::rowCount(const QModelIndex &parent) const
 
 QVariant Lights::data(const QModelIndex &index, int role) const
 {
-    Light *light = m_list.at(index.row());
+    Light *light = (Light*)m_list.at(index.row());
 
     switch (role) {
     case RoleId:
@@ -111,14 +111,15 @@ QHash<int, QByteArray> Lights::roleNames() const
 Light *Lights::get(int index) const
 {
     if (index > -1 && index < m_list.count()) {
-        return m_list.at(index);
+        return (Light*)m_list.at(index);
     }
     return 0;
 }
 
 Light *Lights::findLight(int lightId) const
 {
-    foreach (Light *light, m_list) {
+    foreach (QObject *lightObj, m_list) {
+        Light* light = (Light*)lightObj;
         if (light->id() == lightId) {
             return light;
         }
@@ -151,7 +152,8 @@ void Lights::lightsReceived(int id, const QVariant &variant)
 
     // Find removed lights
     QList<Light*> removedLights;
-    foreach (Light *light, m_list) {
+    foreach (QObject *lightObj, m_list) {
+        Light* light = (Light*)lightObj;
         if (!lights.keys().contains(QString::number(light->id()))) {
             removedLights.append(light);
         }
@@ -166,7 +168,7 @@ void Lights::lightsReceived(int id, const QVariant &variant)
     }
 
     // Update existing lights's name and keep track of newly added lights
-    QList <Light*> newLights;
+    QList <QObject*> newLights;
     foreach (const QString &lightId, lights.keys()) {
         Light *light = findLight(lightId.toInt());
         if (light) {

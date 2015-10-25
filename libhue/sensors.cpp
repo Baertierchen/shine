@@ -83,7 +83,7 @@ int Sensors::columnCount(const QModelIndex &parent) const
 
 QVariant Sensors::data(const QModelIndex &index, int role) const
 {
-    Sensor *sensor = m_list.at(index.row());
+    Sensor *sensor = (Sensor*)m_list.at(index.row());
     switch (role) {
     case Qt::DisplayRole:
         return sensor->name();
@@ -128,14 +128,15 @@ QHash<int, QByteArray> Sensors::roleNames() const
 Sensor *Sensors::get(int index) const
 {
     if (index > -1 && index  < m_list.count()) {
-        return m_list.at(index);
+        return (Sensor*)m_list.at(index);
     }
     return 0;
 }
 
 Sensor *Sensors::findSensor(const QString &id) const
 {
-    foreach (Sensor *sensor, m_list) {
+    foreach (QObject *sensorObj, m_list) {
+        Sensor *sensor = (Sensor*)sensorObj;
         if (sensor->id() == id) {
             return sensor;
         }
@@ -169,7 +170,8 @@ void Sensors::deleteSensor(const QString &id)
 
 Sensor *Sensors::findHelperSensor(const QString &name, const QString &uniqueId)
 {
-    foreach (Sensor *sensor, m_list) {
+    foreach (QObject *sensorObj, m_list) {
+        Sensor *sensor = (Sensor*)sensorObj;
         if (sensor->name() == name && sensor->uniqueId() == uniqueId) {
             return sensor;
         }
@@ -223,7 +225,7 @@ void Sensors::sensorsReceived(int id, const QVariant &variant)
     QList<Sensor*> removedSensors;
     Sensor *sensor = NULL;
     for (int i=0; i<m_list.size(); i++){
-        sensor = m_list[i];
+        sensor = (Sensor*)m_list[i];
         if (!sensors.contains(sensor->id())) {
             removedSensors.append(sensor);
         } else {

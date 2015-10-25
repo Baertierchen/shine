@@ -28,7 +28,7 @@
 #include "condition.h"
 #include "sensors.h"
 
-class Conditions : public QAbstractListModel
+class Conditions : public HueModel
 {
     Q_OBJECT
 public:
@@ -57,11 +57,14 @@ public:
 private slots:
     void updateFinished(int id, const QVariant &response);
 
+    // HueModel interface
+public slots:
+    virtual void refresh();
+
 private:
     void pushUpdates();
 
     HueBridgeConnection *m_connection;
-    QList<Condition*> m_list;
     QString m_ruleID;
     Sensors* m_sensors;
 };
