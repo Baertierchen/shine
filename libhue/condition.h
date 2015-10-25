@@ -48,8 +48,6 @@ private:
     QString m_resource;
     Operator m_op;
     QString m_value;
-
-    bool m_busy;
 };
 
 #endif

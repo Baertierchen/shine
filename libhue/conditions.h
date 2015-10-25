@@ -17,19 +17,14 @@
  *      Steffen Köhler <mail@steffenkoehler.net>
  */
 
-#include <QRegExp>
-
 #ifndef CONDITIONS_H
 #define CONDITIONS_H
 
 #include <QAbstractListModel>
-#include <QTimer>
+#include <QRegExp>
 
 #include "huemodel.h"
-
 #include "condition.h"
-#include "conditions.h"
-
 #include "sensors.h"
 
 class Conditions : public QAbstractListModel
