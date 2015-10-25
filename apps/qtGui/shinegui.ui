@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>695</width>
-    <height>587</height>
+    <width>864</width>
+    <height>767</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -456,6 +456,13 @@
              </widget>
             </item>
             <item>
+             <widget class="QPushButton" name="btn_addRule">
+              <property name="text">
+               <string>Add Rule</string>
+              </property>
+             </widget>
+            </item>
+            <item>
              <spacer name="horizontalSpacer_4">
               <property name="orientation">
                <enum>Qt::Horizontal</enum>
@@ -483,21 +490,6 @@
              <string>Conditions</string>
             </property>
             <layout class="QVBoxLayout" name="verticalLayout_8">
-             <property name="spacing">
-              <number>3</number>
-             </property>
-             <property name="leftMargin">
-              <number>3</number>
-             </property>
-             <property name="topMargin">
-              <number>3</number>
-             </property>
-             <property name="rightMargin">
-              <number>3</number>
-             </property>
-             <property name="bottomMargin">
-              <number>3</number>
-             </property>
              <item>
               <widget class="QTableView" name="lv_ruleConditions">
                <property name="selectionMode">
@@ -520,9 +512,16 @@
                 <number>3</number>
                </property>
                <item>
-                <widget class="QPushButton" name="pushButton">
+                <widget class="QPushButton" name="btn_removeCondition">
                  <property name="text">
                   <string>Remove</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QPushButton" name="btn_addCondition">
+                 <property name="text">
+                  <string>Add Condition</string>
                  </property>
                 </widget>
                </item>
@@ -541,6 +540,47 @@
                </item>
               </layout>
              </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_14">
+               <item>
+                <widget class="QComboBox" name="cmb_conditionSensor">
+                 <property name="sizeAdjustPolicy">
+                  <enum>QComboBox::AdjustToContents</enum>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLineEdit" name="txt_conditionResource">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="text">
+                  <string/>
+                 </property>
+                 <property name="placeholderText">
+                  <string>/state/status</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QComboBox" name="cmb_conditionOperator">
+                 <property name="sizeAdjustPolicy">
+                  <enum>QComboBox::AdjustToContents</enum>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLineEdit" name="txt_conditionValue">
+                 <property name="placeholderText">
+                  <string>0</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
             </layout>
            </widget>
           </item>
@@ -550,21 +590,6 @@
              <string>Actions</string>
             </property>
             <layout class="QVBoxLayout" name="verticalLayout_7">
-             <property name="spacing">
-              <number>3</number>
-             </property>
-             <property name="leftMargin">
-              <number>3</number>
-             </property>
-             <property name="topMargin">
-              <number>3</number>
-             </property>
-             <property name="rightMargin">
-              <number>3</number>
-             </property>
-             <property name="bottomMargin">
-              <number>3</number>
-             </property>
              <item>
               <widget class="QTableView" name="lv_ruleActions">
                <property name="selectionMode">
@@ -587,9 +612,16 @@
                 <number>3</number>
                </property>
                <item>
-                <widget class="QPushButton" name="pushButton_2">
+                <widget class="QPushButton" name="btn_removeAction">
                  <property name="text">
                   <string>Remove</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QPushButton" name="btn_addAction">
+                 <property name="text">
+                  <string>Add Action</string>
                  </property>
                 </widget>
                </item>
@@ -608,6 +640,31 @@
                </item>
               </layout>
              </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_15">
+               <item>
+                <widget class="QLineEdit" name="txt_actionAddress">
+                 <property name="placeholderText">
+                  <string>/groups/0/action</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QComboBox" name="cmb_actionMethod">
+                 <property name="sizeAdjustPolicy">
+                  <enum>QComboBox::AdjustToContents</enum>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <widget class="QTextEdit" name="txt_actionBody">
+               <property name="placeholderText">
+                <string>&quot;status&quot;: 0</string>
+               </property>
+              </widget>
+             </item>
             </layout>
            </widget>
           </item>
@@ -624,7 +681,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>695</width>
+     <width>864</width>
      <height>25</height>
     </rect>
    </property>

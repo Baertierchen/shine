@@ -75,8 +75,16 @@ private slots:
 
     // rules
     void rulesSelectionChanged(const QItemSelection &selected, const QItemSelection &deselected);
+    void ruleConditionsSelectionChanged(const QItemSelection &selected, const QItemSelection &deselected);
+    void ruleActionsSelectionChanged(const QItemSelection &selected, const QItemSelection &deselected);
     void removeRule();
     void addRule();
+
+    void removeCondition();
+    void addCondition();
+
+    void removeAction();
+    void addAction();
 
 private:
     void drawColorMap();
@@ -128,6 +136,14 @@ private:
     RuleActionDelegate ruleActionDelegate;
     Rule* activeRule;
     QModelIndex currentRuleModelIndex;
+
+    // conditions
+    QStringListModel operatorModel;
+    int selectedConditionIndex;
+
+    // action
+    QStringListModel methodModel;
+    int selectedActionIndex;
 };
 
 #endif // SHINEGUI_H

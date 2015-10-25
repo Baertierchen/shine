@@ -65,11 +65,36 @@ ShineGUI::ShineGUI(QWidget *parent) :
     ui->lv_rules->setModel(&rules);
     ui->lv_rules->setItemDelegate(&ruleDelegate);
 
-    ui->lv_ruleConditions->setItemDelegate(&ruleConditionDelegate);
-    ui->lv_ruleActions->setItemDelegate(&ruleActionDelegate);
-
     connect(ui->lv_rules->selectionModel(), &QItemSelectionModel::selectionChanged, this, &ShineGUI::rulesSelectionChanged);
+
     connect(ui->btn_removeRule, &QPushButton::clicked, this, &ShineGUI::removeRule);
+    connect(ui->btn_addRule, &QPushButton::clicked, this, &ShineGUI::addRule);
+
+    // conditions
+    ui->lv_ruleConditions->setItemDelegate(&ruleConditionDelegate);
+    selectedConditionIndex = -1;
+    ui->cmb_conditionSensor->setModel(sensors);
+    ui->cmb_conditionSensor->setModelColumn(0);
+
+    QStringList stringList;
+    stringList << "eq" << "gt" << "lt" << "dx";
+    operatorModel.setStringList(stringList);
+    ui->cmb_conditionOperator->setModel(&operatorModel);
+
+    connect(ui->btn_removeCondition, &QPushButton::clicked, this, &ShineGUI::removeCondition);
+    connect(ui->btn_addCondition, &QPushButton::clicked, this, &ShineGUI::addCondition);
+
+    // actions
+    ui->lv_ruleActions->setItemDelegate(&ruleActionDelegate);
+    selectedActionIndex = -1;
+
+    stringList.clear();
+    stringList << "POST" << "PUT" << "DELETE";
+    methodModel.setStringList(stringList);
+    ui->cmb_actionMethod->setModel(&methodModel);
+
+    connect(ui->btn_removeAction, &QPushButton::clicked, this, &ShineGUI::removeAction);
+    connect(ui->btn_addAction, &QPushButton::clicked, this, &ShineGUI::addAction);
 }
 
 ShineGUI::~ShineGUI()
@@ -259,7 +284,7 @@ void ShineGUI::addSensor()
 
 void ShineGUI::rulesSelectionChanged(const QItemSelection &selected, const QItemSelection &deselected)
 {
-    (void) deselected;
+    Q_UNUSED(deselected)
     if (selected.size() == 1){
         currentRuleModelIndex = selected.first().topLeft();
         activeRule = rules.get(currentRuleModelIndex.row());
@@ -274,8 +299,34 @@ void ShineGUI::rulesSelectionChanged(const QItemSelection &selected, const QItem
         ui->lv_ruleActions->horizontalHeader()->setSectionResizeMode(0, QHeaderView::ResizeToContents);
         ui->lv_ruleActions->horizontalHeader()->setSectionResizeMode(1, QHeaderView::ResizeToContents);
         ui->lv_ruleActions->horizontalHeader()->setSectionResizeMode(2, QHeaderView::Stretch);
+
+        connect(ui->lv_ruleConditions->selectionModel(), &QItemSelectionModel::selectionChanged, this, &ShineGUI::ruleConditionsSelectionChanged);
+        connect(ui->lv_ruleActions->selectionModel(), &QItemSelectionModel::selectionChanged, this, &ShineGUI::ruleActionsSelectionChanged);
     }else{
         activeRule = NULL;
+    }
+}
+
+void ShineGUI::ruleConditionsSelectionChanged(const QItemSelection &selected, const QItemSelection &deselected)
+{
+    qDebug() << "Condition selection";
+    Q_UNUSED(deselected)
+    if (selected.size() == 1){
+        selectedConditionIndex = selected.first().topLeft().row();
+        qDebug() << "Selected" << selectedConditionIndex;
+    }else{
+        selectedConditionIndex = -1;
+        qDebug() << "Unselected";
+    }
+}
+
+void ShineGUI::ruleActionsSelectionChanged(const QItemSelection &selected, const QItemSelection &deselected)
+{
+    Q_UNUSED(deselected)
+    if (selected.size() == 1){
+        selectedActionIndex = selected.first().topLeft().row();
+    }else{
+        selectedActionIndex = -1;
     }
 }
 
@@ -289,4 +340,53 @@ void ShineGUI::removeRule()
 void ShineGUI::addRule()
 {
 
+}
+
+void ShineGUI::removeCondition()
+{
+    if (selectedConditionIndex != -1){
+        qDebug() << "Removing condition" << selectedConditionIndex;
+        activeRule->conditions()->deleteCondition(selectedConditionIndex);
+    }else{
+        qDebug() << "No condition selected";
+    }
+}
+
+void ShineGUI::addCondition()
+{
+    QString sensorID = sensors->get(ui->cmb_conditionSensor->currentIndex())->id();
+    QString resource = ui->txt_conditionResource->text();
+    if (resource == "") resource = "/state/status";
+    Condition::Operator op = (Condition::Operator)ui->cmb_conditionOperator->currentIndex();
+    QString value = ui->txt_conditionValue->text();
+    activeRule->conditions()->addCondition(sensorID, resource, op, value);
+}
+
+void ShineGUI::removeAction()
+{
+    if (selectedActionIndex != -1){
+        qDebug() << "Removing action" << selectedActionIndex;
+        activeRule->actions()->deleteAction(selectedActionIndex);
+    }else{
+        qDebug() << "No condition selected";
+    }
+}
+
+void ShineGUI::addAction()
+{
+    QString address = ui->txt_actionAddress->text();
+    if (address == "") address = "/groups/0/action";
+    Action::Method method = (Action::Method)ui->cmb_actionMethod->currentIndex();
+    QString body = ui->txt_actionBody->toPlainText();
+    QVariant varBody;
+    QJsonParseError error;
+    QJsonDocument jsonDoc = QJsonDocument::fromJson(body.toUtf8(), &error);
+    if (error.error != QJsonParseError::NoError) {
+        qWarning() << "body can not be parsed" << error.errorString();
+        return;
+    } else {
+        varBody = jsonDoc.toVariant();
+    }
+
+    activeRule->actions()->addAction(address, method, varBody.toMap());
 }
