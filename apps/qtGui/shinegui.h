@@ -34,6 +34,7 @@
 #include "rules.h"
 #include "ruleDelegate.h"
 #include "ruleConditionDelegate.h"
+#include "ruleActionDelegate.h"
 
 namespace Ui {
 class ShineGUI;
@@ -124,6 +125,7 @@ private:
     Rules rules;
     RuleDelegate ruleDelegate;
     RuleConditionDelegate ruleConditionDelegate;
+    RuleActionDelegate ruleActionDelegate;
     Rule* activeRule;
     QModelIndex currentRuleModelIndex;
 };
