@@ -29,6 +29,24 @@ Action::Action(QString address, Action::Method method, QVariantMap body, QObject
 {
 }
 
+QVariantMap Action::getVariantMap()
+{
+    QVariantMap map;
+    map.insert("address", m_address);
+
+    QString method;
+    switch (m_method){
+    case POST: method = "POST"; break;
+    case PUT: method = "PUT"; break;
+    case DELETE: method = "DELETE"; break;
+    case Unknown: return map;
+    }
+    map.insert("method", method);
+    map.insert("body", m_body);
+
+    return map;
+}
+
 QString Action::address()
 {
     return m_address;

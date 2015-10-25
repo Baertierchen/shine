@@ -28,6 +28,7 @@ Actions::Actions(QObject *parent) :
 {
     Q_UNUSED(parent)
 
+    m_connection = HueBridgeConnection::instance();
 #if QT_VERSION < 0x050000
     setRoleNames(roleNames());
 #endif
@@ -88,6 +89,11 @@ Action *Actions::get(int index) const
     return 0;
 }
 
+void Actions::setRuleID(QString ID)
+{
+    this->m_ruleID = ID;
+}
+
 bool Actions::setActions(QVariantList actions)
 {
     beginRemoveRows(QModelIndex(), 0, m_list.size()-1);
@@ -113,4 +119,49 @@ bool Actions::setActions(QVariantList actions)
     endInsertRows();
 
     return true;
+}
+
+void Actions::addAction(QString address, Action::Method method, QVariantMap body)
+{
+    Action* action = new Action(address, method, body);
+
+    beginInsertRows(QModelIndex(), m_list.size(), m_list.size());
+    m_list.append(action);
+    endInsertRows();
+
+    pushUpdates();
+}
+
+void Actions::deleteAction(int index)
+{
+    beginRemoveRows(QModelIndex(), index, index);
+    m_list.removeAt(index);
+    endRemoveRows();
+
+    pushUpdates();
+}
+
+void Actions::updateFinished(int id, const QVariant &response)
+{
+    Q_UNUSED(id)
+
+    QVariantMap result = response.toList().first().toMap();
+
+    if (!result.contains("success")) {
+        qDebug() << "An error occured while updating actions:" << response;
+    }
+}
+
+void Actions::pushUpdates()
+{
+    QVariantList actionList;
+    foreach (Action* action, m_list){
+        actionList.append(action->getVariantMap());
+    }
+    QString address = "rules/";
+    address.append(m_ruleID);
+
+    QVariantMap map;
+    map.insert("actions", actionList);
+    m_connection->put(address, map, this, "updateFinished");
 }

@@ -34,6 +34,8 @@ public:
 
     Action(QString address, Method method, QVariantMap body, QObject *parent = 0);
 
+    QVariantMap getVariantMap();
+
     QString address();
     Method method();
     QVariantMap body();

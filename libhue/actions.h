@@ -22,6 +22,7 @@
 
 #include <QAbstractListModel>
 
+#include "huebridgeconnection.h"
 #include "huemodel.h"
 #include "action.h"
 
@@ -44,9 +45,20 @@ public:
     QHash<int, QByteArray> roleNames() const;
     Q_INVOKABLE Action* get(int index) const;
 
+    void setRuleID(QString ID);
     bool setActions(QVariantList actions);
 
+    void addAction(QString address, Action::Method method, QVariantMap body);
+    void deleteAction(int index);
+
+private slots:
+    void updateFinished(int id, const QVariant &response);
+
 private:
+    void pushUpdates();
+
+    HueBridgeConnection *m_connection;
+    QString m_ruleID;
     QList<Action*> m_list;
 };
 
