@@ -29,7 +29,7 @@ Action::Action(QString address, Action::Method method, QVariantMap body, QObject
 {
 }
 
-QVariantMap Action::getVariantMap()
+QVariantMap Action::getVariantMap() const
 {
     QVariantMap map;
     map.insert("address", m_address);

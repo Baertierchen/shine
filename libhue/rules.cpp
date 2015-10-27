@@ -17,6 +17,8 @@
  *      Michael Zanetti <michael_zanetti@gmx.net>
  */
 
+#include <iostream>
+
 #include "rules.h"
 #include "rule.h"
 
@@ -85,13 +87,17 @@ void Rules::deleteRule(QString ruleId)
     HueBridgeConnection::instance()->deleteResource("rules/" + ruleId, this, "ruleDeleted");
 }
 
-void Rules::createRule(const QString &name, const QVariantList &conditions, const QVariantList &actions)
+void Rules::createRule(const QString &name, const Condition &conditions, const Action &actions)
 {
     QVariantMap params;
+    QVariantList varList;
     params.insert("name", name);
     params.insert("status", "enabled");
-    params.insert("conditions", conditions);
-    params.insert("actions", actions);
+    varList.append(conditions.getVariantMap());
+    params.insert("conditions", varList);
+    varList.clear();
+    varList.append(actions.getVariantMap());
+    params.insert("actions", varList);
     HueBridgeConnection::instance()->post("rules", params, this, "createRuleFinished");
 }
 
@@ -304,7 +310,8 @@ void Rules::ruleDeleted(int, const QVariant &response)
 void Rules::createRuleFinished(int id, const QVariant &response)
 {
     Q_UNUSED(id)
-    qDebug() << "create rule finished:" << response;
+    qDebug() << "create rule finished:";
+    std::cerr << response.toString().toStdString();
 }
 
 //void Schedules::deleteSchedule(const QString &id)

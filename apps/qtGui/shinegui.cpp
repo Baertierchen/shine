@@ -82,7 +82,7 @@ ShineGUI::ShineGUI(QWidget *parent) :
     ui->cmb_conditionOperator->setModel(&operatorModel);
 
     stringList.clear();
-    stringList << "Big" << "Left" << "Middle" << "Right";
+    stringList << "Big" << "Left" << "Middle" << "Right" << "Changed";
     tapButtonsModel.setStringList(stringList);
     ui->cmb_conditionTapButtons->setModel(&tapButtonsModel);
 
@@ -328,14 +328,11 @@ void ShineGUI::rulesSelectionChanged(const QItemSelection &selected, const QItem
 
 void ShineGUI::ruleConditionsSelectionChanged(const QItemSelection &selected, const QItemSelection &deselected)
 {
-    qDebug() << "Condition selection";
     Q_UNUSED(deselected)
     if (selected.size() == 1){
         selectedConditionIndex = selected.first().topLeft().row();
-        qDebug() << "Selected" << selectedConditionIndex;
     }else{
         selectedConditionIndex = -1;
-        qDebug() << "Unselected";
     }
 }
 
@@ -358,16 +355,18 @@ void ShineGUI::removeRule()
 
 void ShineGUI::addRule()
 {
+    QVariantMap map;
+    Condition dummyCondition("10", "/state/status", Condition::eq, "0");
+    map.insert("status", 0);
+    Action dummyAction("/sensors/10/state/status", Action::PUT, map);
 
+    rules.createRule(ui->txt_ruleName->text(), dummyCondition, dummyAction);
 }
 
 void ShineGUI::removeCondition()
 {
     if (selectedConditionIndex != -1){
-        qDebug() << "Removing condition" << selectedConditionIndex;
         activeRule->conditions()->deleteCondition(selectedConditionIndex);
-    }else{
-        qDebug() << "No condition selected";
     }
 }
 
@@ -391,6 +390,10 @@ void ShineGUI::addCondition()
             value = QString::number(17); break;
         case 3: // right button
             value = QString::number(18); break;
+        case 4: // right button
+            resource = "/state/lastupdated";
+            op = Condition::dx;
+            value = ""; break;
         }
         break;
 
@@ -434,10 +437,7 @@ void ShineGUI::changedConditionSensor(int index)
 void ShineGUI::removeAction()
 {
     if (selectedActionIndex != -1){
-        qDebug() << "Removing action" << selectedActionIndex;
         activeRule->actions()->deleteAction(selectedActionIndex);
-    }else{
-        qDebug() << "No condition selected";
     }
 }
 

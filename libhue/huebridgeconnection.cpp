@@ -21,6 +21,8 @@
 
 #include "huebridgeconnection.h"
 
+#include <iostream>
+
 #include <QNetworkAccessManager>
 #include <QNetworkRequest>
 #include <QNetworkReply>
@@ -213,7 +215,8 @@ int HueBridgeConnection::post(const QString &path, const QVariantMap &params, QO
     QByteArray data = serializer.serialize(params);
 #endif
 
-    qDebug() << "posting" << jsonDoc.toJson()<< "\nto" << request.url();
+    qDebug() << "posting to:" << request.url();
+    std::cerr << jsonDoc.toJson().toStdString();
     QNetworkReply *reply = m_nam->post(request, data);
     connect(reply, SIGNAL(finished()), this, SLOT(slotOpFinished()));
     m_requestIdMap.insert(reply, m_requestCounter);

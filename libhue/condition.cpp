@@ -28,7 +28,7 @@ Condition::Condition(QString sensorID, QString resource, const Operator op, QStr
     Q_UNUSED(parent);
 }
 
-QVariantMap Condition::getVariantMap()
+QVariantMap Condition::getVariantMap() const
 {
     QVariantMap map;
     QString address = "/sensors/";

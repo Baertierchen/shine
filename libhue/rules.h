@@ -21,6 +21,8 @@
 #define RULES_H
 
 #include "huemodel.h"
+#include "condition.h"
+#include "action.h"
 
 #include <QTimer>
 
@@ -50,7 +52,7 @@ public:
     Q_INVOKABLE Rule* findRule(const QString &id) const;
     Q_INVOKABLE void deleteRule(QString ruleId);
 
-    Q_INVOKABLE void createRule(const QString &name, const QVariantList &conditions, const QVariantList &actions);
+    Q_INVOKABLE void createRule(const QString &name, const Condition &conditions, const Action &actions);
 
     Q_INVOKABLE QVariantMap createHelperCondition(int helperSensorId, const QString &op, const QString &value);
     Q_INVOKABLE QVariantList createHueTapConditions(int tapSensorId, int buttonId);

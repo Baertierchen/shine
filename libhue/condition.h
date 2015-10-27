@@ -37,7 +37,7 @@ public:
 
     Condition(QString sensorID, QString resource, const Operator op, QString value, QObject *parent = 0);
 
-    QVariantMap getVariantMap();
+    QVariantMap getVariantMap() const;
 
     QString sensorID() const;
     QString resource() const;
