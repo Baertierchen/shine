@@ -43,6 +43,8 @@ QVariant Scenes::data(const QModelIndex &index, int role) const
 {
     Scene *scene= (Scene*)m_list.at(index.row());
     switch (role) {
+    case Qt::DisplayRole:
+        return scene->name();
     case RoleId:
         return scene->id();
     case RoleName:

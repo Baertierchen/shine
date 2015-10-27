@@ -82,9 +82,11 @@ private slots:
 
     void removeCondition();
     void addCondition();
+    void changedConditionSensor(int index);
 
     void removeAction();
     void addAction();
+    void changedActionType(int index);
 
 private:
     void drawColorMap();
@@ -139,10 +141,12 @@ private:
 
     // conditions
     QStringListModel operatorModel;
+    QStringListModel tapButtonsModel;
     int selectedConditionIndex;
 
     // action
     QStringListModel methodModel;
+    QStringListModel actionTypeModel;
     int selectedActionIndex;
 };
 

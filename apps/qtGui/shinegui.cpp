@@ -81,8 +81,14 @@ ShineGUI::ShineGUI(QWidget *parent) :
     operatorModel.setStringList(stringList);
     ui->cmb_conditionOperator->setModel(&operatorModel);
 
+    stringList.clear();
+    stringList << "Big" << "Left" << "Middle" << "Right";
+    tapButtonsModel.setStringList(stringList);
+    ui->cmb_conditionTapButtons->setModel(&tapButtonsModel);
+
     connect(ui->btn_removeCondition, &QPushButton::clicked, this, &ShineGUI::removeCondition);
     connect(ui->btn_addCondition, &QPushButton::clicked, this, &ShineGUI::addCondition);
+    connect(ui->cmb_conditionSensor, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, &ShineGUI::changedConditionSensor);
 
     // actions
     ui->lv_ruleActions->setItemDelegate(&ruleActionDelegate);
@@ -93,8 +99,21 @@ ShineGUI::ShineGUI(QWidget *parent) :
     methodModel.setStringList(stringList);
     ui->cmb_actionMethod->setModel(&methodModel);
 
+    stringList.clear();
+    stringList << "Set Scene" << "Set Sensor State" << "Custom";
+    actionTypeModel.setStringList(stringList);
+    ui->cmb_actionType->setModel(&actionTypeModel);
+
+    ui->cmb_actionSensor->setModel(sensors);
+    ui->cmb_actionSensor->setModelColumn(0);
+
+    ui->cmb_actionScene->setModel(&scenes);
+    ui->cmb_actionScene->setModelColumn(0);
+
     connect(ui->btn_removeAction, &QPushButton::clicked, this, &ShineGUI::removeAction);
     connect(ui->btn_addAction, &QPushButton::clicked, this, &ShineGUI::addAction);
+    connect(ui->cmb_actionType, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, &ShineGUI::changedActionType);
+    changedActionType(0);
 }
 
 ShineGUI::~ShineGUI()
@@ -354,12 +373,62 @@ void ShineGUI::removeCondition()
 
 void ShineGUI::addCondition()
 {
-    QString sensorID = sensors->get(ui->cmb_conditionSensor->currentIndex())->id();
+    Sensor* sensor = sensors->get(ui->cmb_conditionSensor->currentIndex());
     QString resource = ui->txt_conditionResource->text();
-    if (resource == "") resource = "/state/status";
     Condition::Operator op = (Condition::Operator)ui->cmb_conditionOperator->currentIndex();
     QString value = ui->txt_conditionValue->text();
-    activeRule->conditions()->addCondition(sensorID, resource, op, value);
+
+    switch (sensor->type()){
+    case Sensor::TypeZGPSwitch: // Hue Tap
+        resource = "/state/buttonevent";
+        op = Condition::eq;
+        switch(ui->cmb_conditionTapButtons->currentIndex()){
+        case 0: // big button
+            value = QString::number(34); break;
+        case 1: // left button
+            value = QString::number(16); break;
+        case 2: // middle button
+            value = QString::number(17); break;
+        case 3: // right button
+            value = QString::number(18); break;
+        }
+        break;
+
+    case Sensor::TypeClipGenericStatus: // Generic Status
+        resource = "/state/status";
+        break;
+
+    default:
+        if (resource == "") resource = "/state/status";
+    }
+
+    activeRule->conditions()->addCondition(sensor->id(), resource, op, value);
+}
+
+void ShineGUI::changedConditionSensor(int index)
+{
+    Sensor* sensor = sensors->get(index);
+    switch (sensor->type()){
+    case Sensor::TypeZGPSwitch: // Hue Tap
+        ui->txt_conditionResource->hide();
+        ui->cmb_conditionOperator->hide();
+        ui->txt_conditionValue->hide();
+        ui->cmb_conditionTapButtons->show();
+        break;
+
+    case Sensor::TypeClipGenericStatus: // Generic Status
+        ui->txt_conditionResource->hide();
+        ui->cmb_conditionOperator->show();
+        ui->txt_conditionValue->show();
+        ui->cmb_conditionTapButtons->hide();
+        break;
+
+    default:
+        ui->txt_conditionResource->show();
+        ui->cmb_conditionOperator->show();
+        ui->txt_conditionValue->show();
+        ui->cmb_conditionTapButtons->hide();
+    }
 }
 
 void ShineGUI::removeAction()
@@ -374,19 +443,69 @@ void ShineGUI::removeAction()
 
 void ShineGUI::addAction()
 {
-    QString address = ui->txt_actionAddress->text();
-    if (address == "") address = "/groups/0/action";
-    Action::Method method = (Action::Method)ui->cmb_actionMethod->currentIndex();
-    QString body = ui->txt_actionBody->toPlainText();
-    QVariant varBody;
+    QString address, body;
+    Action::Method method = Action::PUT;
+    QVariantMap varBody;
+
     QJsonParseError error;
-    QJsonDocument jsonDoc = QJsonDocument::fromJson(body.toUtf8(), &error);
-    if (error.error != QJsonParseError::NoError) {
-        qWarning() << "body can not be parsed" << error.errorString();
-        return;
-    } else {
-        varBody = jsonDoc.toVariant();
+    QJsonDocument jsonDoc;
+
+    Scene* scene;
+    Sensor* sensor;
+
+    switch (ui->cmb_actionType->currentIndex()){
+    case 0:
+        address = "/groups/0/action";
+        method = Action::PUT;
+        scene = scenes.get(ui->cmb_actionScene->currentIndex());
+        varBody.insert("scene", scene->id());
+        break;
+
+    case 1:
+        sensor = sensors->get(ui->cmb_actionSensor->currentIndex());
+        address = QString("/sensors/%1/state/status").arg(sensor->id());
+        method = Action::PUT;
+        varBody.insert("status", ui->txt_actionSensorState->text().toInt());
+        break;
+
+    case 2:
+        address = ui->txt_actionAddress->text();
+        if (address == "") address = "/groups/0/action";
+        method = (Action::Method)ui->cmb_actionMethod->currentIndex();
+        body = ui->txt_actionBody->toPlainText();
+        jsonDoc = QJsonDocument::fromJson(body.toUtf8(), &error);
+        if (error.error != QJsonParseError::NoError) {
+            qWarning() << "body can not be parsed" << error.errorString();
+            return;
+        } else {
+            varBody = jsonDoc.toVariant().toMap();
+        }
+        break;
+
     }
 
-    activeRule->actions()->addAction(address, method, varBody.toMap());
+    activeRule->actions()->addAction(address, method, varBody);
+}
+
+void ShineGUI::changedActionType(int index)
+{
+    switch (index){
+    case 0:
+        ui->gb_actionScene->show();
+        ui->gb_actionSensor->hide();
+        ui->gb_actionCustom->hide();
+        break;
+
+    case 1:
+        ui->gb_actionScene->hide();
+        ui->gb_actionSensor->show();
+        ui->gb_actionCustom->hide();
+        break;
+
+    case 2:
+        ui->gb_actionScene->hide();
+        ui->gb_actionSensor->hide();
+        ui->gb_actionCustom->show();
+        break;
+    }
 }

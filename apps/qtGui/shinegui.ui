@@ -489,7 +489,7 @@
             <property name="title">
              <string>Conditions</string>
             </property>
-            <layout class="QVBoxLayout" name="verticalLayout_8">
+            <layout class="QVBoxLayout" name="verticalLayout_9">
              <item>
               <widget class="QTableView" name="lv_ruleConditions">
                <property name="selectionMode">
@@ -579,6 +579,13 @@
                  </property>
                 </widget>
                </item>
+               <item>
+                <widget class="QComboBox" name="cmb_conditionTapButtons">
+                 <property name="sizeAdjustPolicy">
+                  <enum>QComboBox::AdjustToContents</enum>
+                 </property>
+                </widget>
+               </item>
               </layout>
              </item>
             </layout>
@@ -589,7 +596,7 @@
             <property name="title">
              <string>Actions</string>
             </property>
-            <layout class="QVBoxLayout" name="verticalLayout_7">
+            <layout class="QVBoxLayout" name="verticalLayout_8">
              <item>
               <widget class="QTableView" name="lv_ruleActions">
                <property name="selectionMode">
@@ -619,13 +626,6 @@
                 </widget>
                </item>
                <item>
-                <widget class="QPushButton" name="btn_addAction">
-                 <property name="text">
-                  <string>Add Action</string>
-                 </property>
-                </widget>
-               </item>
-               <item>
                 <spacer name="horizontalSpacer_6">
                  <property name="orientation">
                   <enum>Qt::Horizontal</enum>
@@ -638,31 +638,106 @@
                  </property>
                 </spacer>
                </item>
-              </layout>
-             </item>
-             <item>
-              <layout class="QHBoxLayout" name="horizontalLayout_15">
                <item>
-                <widget class="QLineEdit" name="txt_actionAddress">
-                 <property name="placeholderText">
-                  <string>/groups/0/action</string>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QComboBox" name="cmb_actionMethod">
+                <widget class="QComboBox" name="cmb_actionType">
                  <property name="sizeAdjustPolicy">
                   <enum>QComboBox::AdjustToContents</enum>
                  </property>
                 </widget>
                </item>
+               <item>
+                <widget class="QPushButton" name="btn_addAction">
+                 <property name="text">
+                  <string>Add Action</string>
+                 </property>
+                </widget>
+               </item>
               </layout>
              </item>
              <item>
-              <widget class="QTextEdit" name="txt_actionBody">
-               <property name="placeholderText">
-                <string>&quot;status&quot;: 0</string>
+              <widget class="QGroupBox" name="gb_actionCustom">
+               <property name="title">
+                <string>Custom</string>
                </property>
+               <layout class="QVBoxLayout" name="verticalLayout_7">
+                <item>
+                 <layout class="QHBoxLayout" name="horizontalLayout_15">
+                  <item>
+                   <widget class="QLineEdit" name="txt_actionAddress">
+                    <property name="placeholderText">
+                     <string>/groups/0/action</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QComboBox" name="cmb_actionMethod">
+                    <property name="sizeAdjustPolicy">
+                     <enum>QComboBox::AdjustToContents</enum>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </item>
+                <item>
+                 <widget class="QTextEdit" name="txt_actionBody">
+                  <property name="placeholderText">
+                   <string>&quot;status&quot;: 0</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </widget>
+             </item>
+             <item>
+              <widget class="QGroupBox" name="gb_actionScene">
+               <property name="title">
+                <string>Set Scene</string>
+               </property>
+               <layout class="QHBoxLayout" name="horizontalLayout_16">
+                <item>
+                 <widget class="QComboBox" name="cmb_actionScene">
+                  <property name="sizeAdjustPolicy">
+                   <enum>QComboBox::AdjustToContents</enum>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <spacer name="horizontalSpacer_7">
+                  <property name="orientation">
+                   <enum>Qt::Horizontal</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>40</width>
+                    <height>20</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
+               </layout>
+              </widget>
+             </item>
+             <item>
+              <widget class="QGroupBox" name="gb_actionSensor">
+               <property name="title">
+                <string>Update Sensor State</string>
+               </property>
+               <layout class="QHBoxLayout" name="horizontalLayout_17">
+                <item>
+                 <widget class="QComboBox" name="cmb_actionSensor">
+                  <property name="sizeAdjustPolicy">
+                   <enum>QComboBox::AdjustToContents</enum>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLineEdit" name="txt_actionSensorState">
+                  <property name="placeholderText">
+                   <string>0</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
               </widget>
              </item>
             </layout>
