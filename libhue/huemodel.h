@@ -49,6 +49,44 @@ signals:
     void busyChanged();
 
 protected:
+    template<class Type>
+    void setNewList(QList<Type*> list){
+        bool found=false;
+        Type* current = NULL;
+        for (int i=0; i<m_list.size(); i++){
+            found = false;
+            current = (Type*)m_list[i];
+            foreach (Type* obj, list){
+                if (*obj == *current){
+                    found = true;
+                    break;
+                }
+            }
+            if (!found){
+                beginRemoveRows(QModelIndex(), i, i);
+                m_list.removeAt(i);
+                endRemoveRows();
+            }
+        }
+
+        for (int i=0; i<list.size(); i++){
+            found = false;
+            current = list[i];
+            foreach (QObject* obj, m_list){
+                Type* object = (Type*)obj;
+                if (*object == *current){
+                    found = true;
+                    break;
+                }
+            }
+            if (!found){
+                beginInsertRows(QModelIndex(), m_list.size(), m_list.size());
+                m_list.append(current);
+                endInsertRows();
+            }
+        }
+    }
+
     bool m_busy;
     QList<QObject*> m_list;
 
