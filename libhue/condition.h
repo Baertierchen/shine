@@ -39,10 +39,12 @@ public:
 
     QVariantMap getVariantMap();
 
-    QString sensorID();
-    QString resource();
-    Operator op();
-    QString value();
+    QString sensorID() const;
+    QString resource() const;
+    Operator op() const;
+    QString value() const;
+
+    bool operator==(const Condition& other);
 
 signals:
 

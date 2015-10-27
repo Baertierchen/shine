@@ -102,12 +102,8 @@ void Conditions::setRuleID(QString ID)
 bool Conditions::setConditions(QVariantList conditions)
 {
     if (m_sensors == NULL) return false;
+    QList<Condition*> newCondList;
 
-    beginRemoveRows(QModelIndex(), 0, m_list.size()-1);
-    m_list.clear();
-    endRemoveRows();
-
-    beginInsertRows(QModelIndex(), 0, conditions.size()-1);
     foreach(QVariant condition, conditions){
         QVariantMap conditionMap = condition.toMap();
         QString address = conditionMap.value("address").toString();
@@ -126,9 +122,10 @@ bool Conditions::setConditions(QVariantList conditions)
         else op = Condition::unknown;
 
         Condition *cond = new Condition(sensorID, resource, op, conditionMap.value("value").toString());
-        m_list.append(cond);
+        newCondList.append(cond);
     }
-    endInsertRows();
+
+    setNewList(newCondList);
 
     return true;
 }

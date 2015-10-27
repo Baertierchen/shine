@@ -54,22 +54,30 @@ QVariantMap Condition::getVariantMap()
     return map;
 }
 
-QString Condition::sensorID()
+QString Condition::sensorID() const
 {
     return m_sensorID;
 }
 
-QString Condition::resource()
+QString Condition::resource() const
 {
     return m_resource;
 }
 
-Condition::Operator Condition::op()
+Condition::Operator Condition::op() const
 {
     return m_op;
 }
 
-QString Condition::value()
+QString Condition::value() const
 {
     return m_value;
+}
+
+bool Condition::operator==(const Condition &other)
+{
+    if (m_sensorID != other.sensorID()) return false;
+    if (m_resource != other.resource()) return false;
+    if (m_op != other.op()) return false;
+    return (m_value == other.value());
 }

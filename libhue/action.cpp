@@ -47,17 +47,24 @@ QVariantMap Action::getVariantMap()
     return map;
 }
 
-QString Action::address()
+QString Action::address() const
 {
     return m_address;
 }
 
-Action::Method Action::method()
+Action::Method Action::method() const
 {
     return m_method;
 }
 
-QVariantMap Action::body()
+QVariantMap Action::body() const
 {
     return m_body;
+}
+
+bool Action::operator==(const Action &other)
+{
+    if (m_address != other.address()) return false;
+    if (m_method != other.method()) return false;
+    return (m_body == other.body());
 }

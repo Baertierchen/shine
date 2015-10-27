@@ -36,9 +36,11 @@ public:
 
     QVariantMap getVariantMap();
 
-    QString address();
-    Method method();
-    QVariantMap body();
+    QString address() const;
+    Method method() const;
+    QVariantMap body() const;
+
+    bool operator==(const Action& other);
 
 signals:
 

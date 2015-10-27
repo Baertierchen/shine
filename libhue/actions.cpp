@@ -96,11 +96,7 @@ void Actions::setRuleID(QString ID)
 
 bool Actions::setActions(QVariantList actions)
 {
-    beginRemoveRows(QModelIndex(), 0, m_list.size()-1);
-    m_list.clear();
-    endRemoveRows();
-
-    beginInsertRows(QModelIndex(), 0, actions.size()-1);
+    QList<Action*> newActions;
     foreach(QVariant action, actions){
         QVariantMap actionMap = action.toMap();
         QString address = actionMap.value("address").toString();
@@ -114,9 +110,10 @@ bool Actions::setActions(QVariantList actions)
         else method = Action::Unknown;
 
         Action *newAction = new Action(address, method, body);
-        m_list.append(newAction);
+        newActions.append(newAction);
     }
-    endInsertRows();
+
+    setNewList(newActions);
 
     return true;
 }
